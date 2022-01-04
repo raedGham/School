@@ -41,7 +41,7 @@ const Main = () => {
                                     {user.email}
                                 </a>
 
-                                <ul className="dropdown-menu text-danger" aria-labelledby="navbarDropdown">
+                                <ul className="dropdown-menu " aria-labelledby="navbarDropdown">
                                     {user && user.role === "teacher" && <li><Link to="/user/history">User Dashboard </Link></li>}
                                     {user && user.role === "admin" && <li><Link to="/admin/dashboard">Admin Dashboard </Link></li>}
                                     <li><a className="dropdown-item" onClick={logout}>Logout</a></li>

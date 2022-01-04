@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TeachersList = ({ teachers , handleEditClick, handleUpdateSubmit, handleDelete}) => { 
+const TeachersList = ({ students , handleEditClick, handleUpdateSubmit, handleDelete}) => { 
     return (
         <div>
             <table className='table table-outline' onSubmit = {handleUpdateSubmit}>
@@ -11,7 +11,7 @@ const TeachersList = ({ teachers , handleEditClick, handleUpdateSubmit, handleDe
                     </tr>
                 </thead>
                 <tbody>
-                    {teachers.map((t) => <tr key={t._id}>
+                    {students.map((t) => <tr key={t._id}>
                         <td>{t.name}</td>
                         <td>{t.email}</td>
                         <td> <a className='text-primary fa fa-edit' onClick={()=> handleEditClick(t)} /></td>

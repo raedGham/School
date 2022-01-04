@@ -7,21 +7,20 @@ export const getTeachers = async () => {
 
 export const createTeacher = async (teacher, authToken) => {
     console.log("teacher:",teacher)
-    return await axios.post(`${process.env.REACT_APP_API}/teacher`, teacher)
+    return await axios.post(`${process.env.REACT_APP_API}/teacher`, teacher , { headers: { authToken } })
 }
 
 
+export const removeTeacher = async (id, authToken) => {
+    return await axios.delete(`${process.env.REACT_APP_API}/teacher/${id}`, { headers: { authToken } })
+}
 
-// export const getCategory = async (slug) => {
-//     return await axios.get(`${process.env.REACT_APP_API}/category/${slug}`)
-// }
-
-// export const removeCategory = async (slug, authToken) => {
-//     return await axios.delete(`${process.env.REACT_APP_API}/category/${slug}`, { headers: { authToken } })
-// }
-
-// export const updateCategory = async (slug, category, authToken) => {
-//     return await axios.put(`${process.env.REACT_APP_API}/category/${slug}`, category, { headers: { authToken} })
-// }
+export const updateTeacher = async (teacher, authToken) => {
+    console.log("teacher:", teacher);
+    console.log(authToken);
+    return await axios.put(`${process.env.REACT_APP_API}/teacher/${teacher._id}`, teacher, { headers: { authToken} })
+    .then((res)=> console.log(res))
+    .catch((err) => console.log("Error in funct",err));
+}
 
 

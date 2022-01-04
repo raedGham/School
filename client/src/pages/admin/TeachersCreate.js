@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
-import { createTeacher, getTeachers } from '../../functions/teacher';
+import { createTeacher, getTeachers,  updateTeacher, removeTeacher  } from '../../functions/teacher';
 import TeachersList from '../../components/forms/TeachersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import TeacherCreateForm from '../../components/forms/TeacherCreateForm';
+import TeacherUpdateForm from "../../components/forms/TeacherUpdateForm";
 
 
 
@@ -25,19 +26,79 @@ const TeachersCreate = () => {
     const [teachers, setTeachers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
+    const [showUpdate, setShowUpdate] = useState(false);
+   
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // console.log("User", user);
+        createTeacher(values, user.token)
+            .then(res => {
+                toast.success(`${res.data.name} created Sucessfully`)
+                setInterval(() =>loadTeachers(), 500);
+            })
+            .catch(err => {
+                console.log("create Teacher catch err", err.response)
+                if (err.response.status === 400)  toast.error(err.response.data);
+    })
+};
+
+const handleUpdateSubmit = (e) => {
+    e.preventDefault();
+
+    updateTeacher(values, user.token)
+        .then(res => {
+            console.log("UPDATED")
+            
+            toast.success(` Updated Sucessfully`)
+            setInterval(() => loadTeachers(), 500);
+        })
+        .catch((err) => console.log("Update Teacher catch err", err) )          
+         
+};
+
+
+    const handleChange = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value })
+    }
+
+    
     useEffect(() => loadTeachers(), []);
 
     const loadTeachers = () => {
+        if (show) setShow(false);
+        if (showUpdate) setShowUpdate(false);
         getTeachers()
             .then((t) => {
-                setTeachers(t.data);
+                setTeachers(t.data);        
             }
             )
     }
 
-    const addTeacher = () => setShow(true)
+    const addTeacher = () => {
+     setValues( initialState);
+    setShow(true);
+    }
 
 
+    const handleEditClick= (t) => { 
+        setValues({...t}); 
+        console.log(values);
+       if(show) setShow(false); 
+       if (!showUpdate) setShowUpdate(true);       
+   }
+   
+   const handleDelete = (id) => {
+    if (window.confirm("Delete?")) {
+        removeTeacher(id, user.token)
+            .then(res => {              
+                toast.error(`${res.data.name} REMOVED`);
+            }).catch((err) => {
+                if (err.response.status === 400) toast.error(err.response.data)
+            })
+    }
+}  
     return (
         <div className="container-fluid">
             <div className="row">
@@ -45,13 +106,14 @@ const TeachersCreate = () => {
 
                 <div className="col-md-3 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : <h4>Teachers</h4>}
-                    {<TeachersList teachers={teachers} />}
+                    { <TeachersList teachers={teachers}  handleEditClick={(t)=>handleEditClick(t)}  handleDelete={(t)=>handleDelete(t)}/>}
                 </div>
 
-                <div className="col-md-7 text-left">
+                <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <button className='btn btn-primary' onClick={addTeacher}>Add Teacher</button>
-                        {show ? (<TeacherCreateForm values={values} setValues={setValues} />) : ""}
+                        <button className='btn btn-primary ml-4' onClick={addTeacher} hidden={showUpdate} >Add Teacher</button>
+                        {show ? (<TeacherCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit}/>) : ""}
+                        {showUpdate ? <TeacherUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit}/> :""}
                     </>
 
                     )}

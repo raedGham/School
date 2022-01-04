@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const main = () => {
+const Main = () => {
+    
+    const { user} = useSelector((state) => ({...state}));
+
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        
+         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand " href="#"> <i className="fas fa-school"></i> School</a>
+                <a className="navbar-brand" href="#"> <i className="fas fa-school"></i>School</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -14,20 +19,24 @@ const main = () => {
                         <li className="nav-item">
                             <a className="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
-                        <li className="nav-item pt-2" >
+
+                        {!user && (
+                        <li className="nav-item" >
                             <Link to="/login" > Login </Link>
-                        </li>
+                        </li>)}
+
+                        { user && (
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
+                             {user.email} 
                             </a>
+                            
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li><hr className="dropdown-divider" /></li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                {user && user.role === "teacher" && <li><Link to="/user/history">User Dashboard </Link></li>}
+                                {user && user.role === "admin" && <li><Link to="/admin/dashboard">Admin Dashboard </Link></li>}                                                           
+                                <li><a className="dropdown-item" href="#">Logout</a></li>
                             </ul>
-                        </li>
+                        </li>)}
 
                     </ul>
                     <form className="d-flex">
@@ -37,7 +46,8 @@ const main = () => {
                 </div>
             </div>
         </nav>
+        
     );
 };
 
-export default main;
+export default Main;

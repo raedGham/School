@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
-import { createStudent, getStudents, updateStudent, removeStudent } from '../../functions/student';
+import { createStudent, updateStudent, removeStudent , getStudentsCount, getStudentsByPage} from '../../functions/student';
 import StudentsList from '../../components/forms/StudentsList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import StudentCreateForm from '../../components/forms/StudentCreateForm';
 import StudentUpdateForm from "../../components/forms/StudentUpdateForm";
+import ReactPaginate from "react-paginate";
 
 const StudentsCreate = () => {
     const initialState = {
@@ -19,14 +20,15 @@ const StudentsCreate = () => {
 
     }
     const [values, setValues] = useState(initialState);
-
+    const [studentsCount, setStudentsCount] = useState(0);
+    const [page, setPage] = useState(0);  
     const { user } = useSelector(state => ({ ...state }));
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState(false);
-    const [showUpdate, setShowUpdate] = useState(false);
-
-
+    const [show, setShow] = useState();
+    const [showUpdate, setShowUpdate] = useState();
+    const perPage = 5;
+     
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,7 +36,9 @@ const StudentsCreate = () => {
         createStudent(values, user.token)
             .then(res => {
                 toast.success(`${res.data.name} created Sucessfully`)
-                setInterval(() => loadStudents(), 500);
+                setInterval(() => {
+                    setShow(false);
+                    loadStudents()}, 500);
             })
             .catch(err => {
                 console.log("create Student catch err", err.response)
@@ -49,7 +53,11 @@ const StudentsCreate = () => {
             .then(res => {
                 console.log("UPDATED")
                 toast.success(`Updated Sucessfully`)
-                setInterval(() => loadStudents(), 500);
+                setInterval(() => {
+                    setShowUpdate(false);                                     
+                    // loadStudents()
+                
+                }, 500);
             })
             .catch((err) => console.log("Update Student catch err", err))
 
@@ -60,14 +68,22 @@ const StudentsCreate = () => {
         setValues({ ...values, [e.target.name]: e.target.value })
     }
 
+    useEffect(() => {
+        console.log()
+        getStudentsCount(user.token)
+          .then((res) => setStudentsCount(res.data));
+    
+      },[]);
+    
 
-    useEffect(() => loadStudents(), []);
+    useEffect(() => loadStudents(), [page]);
+   
 
-    const loadStudents = () => {
-        if (show) setShow(false);
-        if (showUpdate) setShowUpdate(false);
-        getStudents()
+    const loadStudents = () => {    
+        setLoading(true)
+         getStudentsByPage('name', 'desc', page+1, perPage,user.token)
             .then((s) => {
+                setLoading(false);
                 setStudents(s.data);
             }
             )
@@ -75,15 +91,16 @@ const StudentsCreate = () => {
 
     const addStudent = () => {
         setValues(initialState);
-        setShow(true);
+        if (showUpdate) setShowUpdate(false);
+        if(!show) setShow(true);
     }
 
 
     const handleEditClick = (t) => {
         setValues({ ...t });
-
         if (show) setShow(false);
         if (!showUpdate) setShowUpdate(true);
+      
     }
 
     const handleDelete = (id) => {
@@ -97,16 +114,34 @@ const StudentsCreate = () => {
                 })
         }
     }
-    return (
+
+    const pageCount = studentsCount/perPage;
+   
+    return (        
         <div className="container-fluid">
             <div className="row">
                 <div className="col-md-2">  <AdminNav /></div>
-
+               
                 <div className="col-md-4 text-left">
-                    {loading ? <h4 className='text-danger'>Loading...</h4> : <h4>Students</h4>}
-                    {<StudentsList students={students} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
+                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
+                                                                              <i className="fas fa-book-reader fa-2x"></i> 
+                                                                              <span className='h4'> Students </span>
+                                                                              </> ) }                              
+                    {<StudentsList students={students} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}                  
+                     <ReactPaginate
+                       previousLabel={'< Previous'}
+                       nextLabel = {'Next >'}
+                       pageCount={Math.ceil(pageCount)}
+                       onPageChange={({selected})=> setPage(selected)}
+                       containerClassName={"paginationBttns"}
+                       previousLinkClassName={"previousBttn"}
+                       nextLinkClassName={"nextBttn"}
+                       disabledClassName={"paginationDisabled"}
+                       activeClassName={"paginationActive"}                      
+                    />
                 </div>
-
+               { console.log("SHOW", show)}
+                 {console.log("SHOWUPDATE", showUpdate)}
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addStudent} hidden={showUpdate} >Add Student</button>

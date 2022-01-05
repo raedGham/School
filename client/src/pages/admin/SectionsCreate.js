@@ -9,7 +9,7 @@ import TeacherUpdateForm from "../../components/forms/TeacherUpdateForm";
 
 
 
-const TeachersCreate = () => {
+const SectionsCreate = () => {
     const initialState = {
         name: "",
         email: "",
@@ -50,7 +50,6 @@ const TeachersCreate = () => {
         updateTeacher(values, user.token)
             .then(res => {
                 console.log("UPDATED")
-
                 toast.success(` Updated Sucessfully`)
                 setInterval(() => loadTeachers(), 500);
             })
@@ -132,5 +131,4 @@ const TeachersCreate = () => {
         </div>
     );
 };
-
-export default TeachersCreate;
+export default SectionsCreate ;

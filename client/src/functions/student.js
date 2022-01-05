@@ -22,3 +22,14 @@ export const updateStudent = async (student, authToken) => {
         .then((res) => console.log(res))
         .catch((err) => console.log("Error in funct", err));
 }
+
+
+export const getStudentsCount = async (authToken) => {
+    return await axios.get(`${process.env.REACT_APP_API}/students/total`, { headers: { authToken } })
+}
+
+
+export const getStudentsByPage = async (sort, order, page, perPage, authToken) => {
+
+    return await axios.post(`${process.env.REACT_APP_API}/students`, { sort, order, page, perPage },{ headers: { authToken } })
+}

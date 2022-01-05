@@ -20,7 +20,16 @@ const AdminNav = () => {
                 <li className='nav-item'>
                     <Link to="/admin/students" className='nav-link'>STUDENTS</Link>
                 </li>
+                <hr/>
 
+                <li className='nav-item'>
+                    <Link to="/admin/subjects" className='nav-link'>SUBJECTS</Link>
+                </li>
+                <li className='nav-item'>
+                    <Link to="/admin/subs" className='nav-link'>SUBS of SUBJECTS</Link>
+                </li>
+                <hr/>
+                
                 <li className='nav-item'>
                     <Link to="/admin/ClassNamees" className='nav-link'>CLASSES</Link>
                 </li>
@@ -28,7 +37,8 @@ const AdminNav = () => {
                 <li className='nav-item'>
                     <Link to="/admin/sections" className='nav-link'>SECTIONS</Link>
                 </li>
-           
+                <hr/>
+                          
                 <li className='nav-item'>
                     <Link to="/user/accounts" className='nav-link'>USERS ACCOUNTS</Link>
                 </li>

@@ -8,7 +8,7 @@ const Main = () => {
     const { user } = useSelector((state) => ({ ...state }));
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    console.log(user);
     const logout = () => {
         auth.signOut();
         dispatch({ type: "LOGOUT", payload: null });

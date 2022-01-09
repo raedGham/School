@@ -4,11 +4,11 @@ const { ObjectId } = mongoose.Schema;
 
 
 const classSchema = new mongoose.Schema({
-    name: { type: String, required: true, index: true },    
-    code : String,   
+    name: { type: String, required: true, index: true },
+    code: String,
     level: String,
-    sections:  [{ section: { type: ObjectId, ref: "Section" }}],
-    subjects : [{ subject: { type: ObjectId, ref: "Subject" }}]
+    sections: [{ type: ObjectId, ref: "Section" }],
+    //   subjects : [{ subject: { type: ObjectId, ref: "Subject" }}]
 }, { timestamps: true });
 
 

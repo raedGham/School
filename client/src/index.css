@@ -62,3 +62,8 @@ code {
   color: white;
   text-decoration: none;
 }
+
+.sectionsfont {
+  font-size: 12px  !important;
+  color:rgb(172, 169, 169);
+}

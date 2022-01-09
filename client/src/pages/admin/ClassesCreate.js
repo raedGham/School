@@ -15,6 +15,7 @@ const ClassesCreate = () => {
         name: "",
         code: "",
         level: "",
+        sections: []
     }
     const [values, setValues] = useState(initialState);
 
@@ -29,7 +30,7 @@ const ClassesCreate = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("User", user);
+        console.log("Values --->", values);
         createClass(values, user.token)
             .then(res => {
                 toast.success(`${res.data.name} created Sucessfully`)
@@ -130,7 +131,7 @@ const ClassesCreate = () => {
                 value.push(options[i].value);
             }
         }
-        console.log("value---->", value)
+        //console.log("value---->", value)
         setValues({ ...values, sections: value })
     }
 

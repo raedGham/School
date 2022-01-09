@@ -1,46 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-
+import { AiOutlineDashboard } from "react-icons/ai";
+import { ImUsers } from "react-icons/im";
+import { FaChalkboardTeacher, FaBookReader, FaBookOpen, FaSwatchbook, FaChalkboard, FaBuromobelexperte } from "react-icons/fa";
 
 const AdminNav = () => {
+
+
     return (
 
-        <nav className="bg-light" >
-            <ul className='nav flex-column'>
+        <nav className='nav-menu active' >
+            <ul className='nav-menu-items'>
 
-                <li className='nav-item' >
-                    <Link to="/admin/dashboard" className='nav-link'>DASHBOARD</Link>
+                <li className='nav-text' >
+                    <Link to="/admin/dashboard" className='nav-link'> <AiOutlineDashboard /> <span>DASHBOARD</span></Link>
                 </li>
 
-                <li className='nav-item'>
-                    <Link to="/admin/teachers" className='nav-link'>TEACHERS</Link>
+                <li className='nav-text'>
+                    <Link to="/admin/teachers" className='nav-link'><FaChalkboardTeacher /> <span>TEACHERS</span></Link>
                 </li>
 
-                <li className='nav-item'>
-                    <Link to="/admin/students" className='nav-link'>STUDENTS</Link>
-                </li>
-                <hr />
-
-                <li className='nav-item'>
-                    <Link to="/admin/subjects" className='nav-link'>SUBJECTS</Link>
-                </li>
-                <li className='nav-item'>
-                    <Link to="/admin/subs" className='nav-link'>SUBS of SUBJECTS</Link>
+                <li className='nav-text'>
+                    <Link to="/admin/students" className='nav-link'><FaBookReader /> <span>STUDENTS</span></Link>
                 </li>
                 <hr />
 
-                <li className='nav-item'>
-                    <Link to="/admin/Classes" className='nav-link'>CLASSES</Link>
+                <li className='nav-text'>
+                    <Link to="/admin/subjects" className='nav-link'><FaBookOpen /> <span>SUBJECTS</span></Link>
                 </li>
-
-                <li className='nav-item'>
-                    <Link to="/admin/sections" className='nav-link'>SECTIONS</Link>
+                <li className='nav-text'>
+                    <Link to="/admin/subs" className='nav-link'><FaSwatchbook /> <span>SUBS of SUBJECTS</span></Link>
                 </li>
                 <hr />
 
-                <li className='nav-item'>
-                    <Link to="/user/accounts" className='nav-link'>USERS ACCOUNTS</Link>
+                <li className='nav-text'>
+                    <Link to="/admin/Classes" className='nav-link'><FaChalkboard /> <span>CLASSES</span></Link>
+                </li>
+
+                <li className='nav-text'>
+                    <Link to="/admin/sections" className='nav-link'><FaBuromobelexperte /> <span>SECTIONS</span></Link>
+                </li>
+                <hr />
+
+                <li className='nav-text'>
+                    <Link to="/user/accounts" className='nav-link'><ImUsers /> <span>USERS ACCOUNTS</span></Link>
                 </li>
 
             </ul>

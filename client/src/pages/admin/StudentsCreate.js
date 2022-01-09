@@ -126,7 +126,7 @@ const StudentsCreate = () => {
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-md-2">  <AdminNav /></div>
+                <div className="col-md-2 p-0">  <AdminNav /></div>
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>

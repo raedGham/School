@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
-import { createSubSubject, getSubSubjects, updateSubSubject, removeSubSubject } from '../../functions/subSubject';
-import SubjectsList from '../../components/forms/SubSubjects/SubSubjectsList';
+import { createCourse, getCourses, updateCourse, removeCourse } from '../../functions/course';
+import {getSubCourses} from '../../functions/subCourse';
+import CoursesList from '../../components/forms/Courses/CoursesList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import SubSubjectCreateForm from '../../components/forms/SubSubjects/SubSubjectsCreateForm';
-import SubSubjectUpdateForm from "../../components/forms/SubSubjects/SubSubjectsUpdateForm";
+import CourseCreateForm from '../../components/forms/Courses/CoursesCreateForm';
+import CourseUpdateForm from "../../components/forms/Courses/CoursesUpdateForm";
 
 
 
-const SubSubjectsCreate = () => {
+const CoursesCreate = () => {
     const initialState = {
         name: "",
         code: "",
+        subs:[]
     }
     const [values, setValues] = useState(initialState);
 
     const { user } = useSelector(state => ({ ...state }));
-    const [subSubjects, setSubSubjects] = useState([]);
+    const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [subs, setSubs] = useState([]);
     const [show, setShow] = useState();
     const [showUpdate, setShowUpdate] = useState();
 
@@ -27,21 +30,21 @@ const SubSubjectsCreate = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // console.log("User", user);
-        createSubSubject(values, user.token)
+        createCourse(values, user.token)
             .then(res => {
                 toast.success(`${res.data.name} created Sucessfully`)
 
                 setTimeout(() => {
 
                     setShow(false);
-                    loadSubSubjects();
+                    loadCourses();
                     return
                 }
 
                     , 1000);
             })
             .catch(err => {
-                console.log("create SubSubject catch err", err.response)
+                console.log("create course catch err", err.response)
                 if (err.response.status === 400) toast.error(err.response.data);
             })
     };
@@ -49,16 +52,16 @@ const SubSubjectsCreate = () => {
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
 
-        updateSubSubject(values, user.token)
+        updateCourse(values, user.token)
             .then(res => {
                 toast.success(` Updated Sucessfully`)
                 setTimeout(() => {
                     setShowUpdate(false);
-                    loadSubSubjects();
+                    loadCourses();
                     return
                 }, 1000);
             })
-            .catch((err) => console.log("Update SubSubject catch err", err))
+            .catch((err) => console.log("Update course catch err", err))
 
     };
 
@@ -69,19 +72,29 @@ const SubSubjectsCreate = () => {
 
 
     useEffect(() => {
-        console.log("load subSubject executes from useEffect");
-        loadSubSubjects()
+        console.log("load course executes from useEffect");
+        loadCourses();
+        loadSubs();
     }, []);
 
-    const loadSubSubjects = () => {
-        getSubSubjects()
+    const loadCourses = () => {
+        getCourses()
             .then((t) => {
-                setSubSubjects(t.data);
+                setCourses(t.data);
             }
             )
+            .catch((err)=> console.log("ERR SUBJECTS===> ", err))
     }
 
-    const addSubSubject = () => {
+    const loadSubs = () => {
+        getSubCourses()
+            .then((s) => {
+                setSubs(s.data);
+            })
+            .catch((err)=> console.log("ERR SUBS===> ", err))
+            
+    }
+    const addCourse = () => {
         setValues(initialState);
         if (showUpdate) setShowUpdate(false);
         if (!show) setShow(true);
@@ -98,11 +111,11 @@ const SubSubjectsCreate = () => {
 
     const handleDelete = (id) => {
         if (window.confirm("Delete?")) {
-            removeSubSubject(id, user.token)
+            removeCourse(id, user.token)
                 .then(res => {
                     toast.error(`${res.data.name} REMOVED`);
                     setTimeout(() => {
-                        loadSubSubjects();
+                        loadCourses();
                         return
                     }, 500);
                 }).catch((err) => {
@@ -111,6 +124,19 @@ const SubSubjectsCreate = () => {
         }
     }
 
+    const handleSubChange = (e) => {
+        var options = e.target.options;
+        var value = [];
+        for (var i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                value.push(options[i].value);
+            }
+        }
+        console.log("value---->", value)
+        setValues({ ...values, subs: value })
+    }
+
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -118,19 +144,25 @@ const SubSubjectsCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fas fa-swatchbook fa-2x"></i>
-                        <span className='h4'> Sub Subjects </span>
+                        <i className="fas fa-book-open fa-2x"></i>
+                        <span className='h4'> Courses </span>
                     </>)}
-                    {console.log(subSubjects)}
-                    {subSubjects !== undefined ? <SubjectsList subSubjects={subSubjects} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} /> : <p className='mt-2'>No Subs yet</p>}
+
+                    {<CoursesList courses={courses} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
                 </div>
                 {console.log("SHOW", show)}
                 {console.log("SHOWUPDATE", showUpdate)}
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <button className='btn btn-primary ml-4' onClick={addSubSubject} hidden={showUpdate} >Add SubSubject</button>
-                        {show ? (<SubSubjectCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} />) : ""}
-                        {showUpdate ? <SubSubjectUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
+                        <button className='btn btn-primary ml-4' onClick={addCourse} hidden={showUpdate} >Add Course</button>
+                        {show ? (<CourseCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} subs = {subs}
+                                                         handleSubChange={handleSubChange} />) : ""}
+                        {showUpdate ? <CourseUpdateForm values={values} 
+                                                         setValues={setValues} 
+                                                         handleChange={handleChange} 
+                                                         handleUpdateSubmit={handleUpdateSubmit} 
+                                                         subs = {subs}
+                                                         handleSubChange={handleSubChange} /> : ""}
                     </>
 
                     )}
@@ -144,4 +176,4 @@ const SubSubjectsCreate = () => {
     );
 };
 
-export default SubSubjectsCreate;
+export default CoursesCreate;

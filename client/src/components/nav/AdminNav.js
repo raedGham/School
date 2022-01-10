@@ -26,10 +26,10 @@ const AdminNav = () => {
                 <hr />
 
                 <li className='nav-text'>
-                    <Link to="/admin/subjects" className='nav-link'><FaBookOpen /> <span>SUBJECTS</span></Link>
+                    <Link to="/admin/courses" className='nav-link'><FaBookOpen /> <span>COURSES</span></Link>
                 </li>
                 <li className='nav-text'>
-                    <Link to="/admin/subs" className='nav-link'><FaSwatchbook /> <span>SUBS of SUBJECTS</span></Link>
+                    <Link to="/admin/subs" className='nav-link'><FaSwatchbook /> <span>SUB COURSES</span></Link>
                 </li>
                 <hr />
 

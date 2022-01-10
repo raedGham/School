@@ -8,9 +8,9 @@ import Login from './pages/auth/Login';
 import TeachersCreate from './pages/admin/TeachersCreate';
 import StudentsCreate from './pages/admin/StudentsCreate';
 import SectionsCreate from './pages/admin/SectionsCreate';
-import SubjectsCreate from './pages/admin/SubjectsCreate';
+import CoursesCreate from './pages/admin/CoursesCreate';
 import ClassesCreate from './pages/admin/ClassesCreate';
-import SubSubjectsCreate from './pages/admin/SubSubjectsCreate';
+import SubCoursesCreate from './pages/admin/SubCoursesCreate';
 import AdminDashboard from './pages/admin/AdminDashboard';
 
 
@@ -28,9 +28,9 @@ function App() {
           <Route path="/admin/teachers" exact element={<TeachersCreate />} />
           <Route path="/admin/students" exact element={<StudentsCreate />} />
           <Route path="/admin/sections" exact element={<SectionsCreate />} />
-          <Route path="/admin/subjects" exact element={<SubjectsCreate />} />
+          <Route path="/admin/courses" exact element={<CoursesCreate />} />
           <Route path="/admin/classes" exact element={<ClassesCreate />} />
-          <Route path="/admin/subs" exact element={<SubSubjectsCreate />} />
+          <Route path="/admin/subs" exact element={<SubCoursesCreate />} />
         </Routes>
       </BrowserRouter>
 

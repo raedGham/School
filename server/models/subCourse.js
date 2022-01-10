@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 //const { ObjectId } = mongoose.Schema;
 
 
-const subSubjectSchema = new mongoose.Schema({
+const subSchema = new mongoose.Schema({
     name: { type: String, required: true, index: true },    
     code : String,   
     gradeOn: Number,
@@ -11,4 +11,4 @@ const subSubjectSchema = new mongoose.Schema({
 
 
 
-module.exports = mongoose.model('SubSubject', subSubjectSchema);
+module.exports = mongoose.model('Sub', subSchema);

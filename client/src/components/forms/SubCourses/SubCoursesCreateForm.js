@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SubSubjectsCreateForm = ({ values, setValues, handleChange, handleSubmit }) => {
+const SubCoursesCreateForm = ({ values, setValues, handleChange, handleSubmit }) => {
     const { name, code } = values;
     return (
         <form onSubmit={handleSubmit}>
@@ -21,4 +21,4 @@ const SubSubjectsCreateForm = ({ values, setValues, handleChange, handleSubmit }
     );
 };
 
-export default SubSubjectsCreateForm;
+export default SubCoursesCreateForm;

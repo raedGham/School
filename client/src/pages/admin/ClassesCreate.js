@@ -161,7 +161,14 @@ const ClassesCreate = () => {
                             sections={sections}
                             handleSectionChange={handleSectionChange} />) : ""}
 
-                        {showUpdate ? <ClassUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
+                        {showUpdate ? <ClassUpdateForm 
+                                                    values={values} 
+                                                    setValues={setValues} 
+                                                    handleChange={handleChange} 
+                                                    handleUpdateSubmit={handleUpdateSubmit} 
+                                                    sections={sections}
+                                                    handleSectionChange={handleSectionChange}
+                                                    /> : ""}
                     </>
 
                     )}

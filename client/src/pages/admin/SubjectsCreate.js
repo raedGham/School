@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 import { createSubject, getSubjects, updateSubject, removeSubject } from '../../functions/subject';
+import {getSubSubjects} from '../../functions/subSubject';
 import SubjectsList from '../../components/forms/Subjects/SubjectsList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -13,12 +14,14 @@ const SubjectsCreate = () => {
     const initialState = {
         name: "",
         code: "",
+        subs:[]
     }
     const [values, setValues] = useState(initialState);
 
     const { user } = useSelector(state => ({ ...state }));
     const [subjects, setSubjects] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [subs, setSubs] = useState([]);
     const [show, setShow] = useState();
     const [showUpdate, setShowUpdate] = useState();
 
@@ -70,7 +73,8 @@ const SubjectsCreate = () => {
 
     useEffect(() => {
         console.log("load subject executes from useEffect");
-        loadSubjects()
+        loadSubjects();
+        loadSubs();
     }, []);
 
     const loadSubjects = () => {
@@ -79,8 +83,17 @@ const SubjectsCreate = () => {
                 setSubjects(t.data);
             }
             )
+            .catch((err)=> console.log("ERR SUBJECTS===> ", err))
     }
 
+    const loadSubs = () => {
+        getSubSubjects()
+            .then((s) => {
+                setSubs(s.data);
+            })
+            .catch((err)=> console.log("ERR SUBS===> ", err))
+            
+    }
     const addSubject = () => {
         setValues(initialState);
         if (showUpdate) setShowUpdate(false);
@@ -111,6 +124,19 @@ const SubjectsCreate = () => {
         }
     }
 
+    const handleSubChange = (e) => {
+        var options = e.target.options;
+        var value = [];
+        for (var i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                value.push(options[i].value);
+            }
+        }
+        console.log("value---->", value)
+        setValues({ ...values, subs: value })
+    }
+
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -129,8 +155,14 @@ const SubjectsCreate = () => {
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addSubject} hidden={showUpdate} >Add Subject</button>
-                        {show ? (<SubjectCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} />) : ""}
-                        {showUpdate ? <SubjectUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
+                        {show ? (<SubjectCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} subs = {subs}
+                                                         handleSubChange={handleSubChange} />) : ""}
+                        {showUpdate ? <SubjectUpdateForm values={values} 
+                                                         setValues={setValues} 
+                                                         handleChange={handleChange} 
+                                                         handleUpdateSubmit={handleUpdateSubmit} 
+                                                         subs = {subs}
+                                                         handleSubChange={handleSubChange} /> : ""}
                     </>
 
                     )}

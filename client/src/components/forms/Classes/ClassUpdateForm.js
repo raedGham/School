@@ -1,7 +1,8 @@
 import React from 'react';
 
-const ClassCreateForm = ({ values, setValues, handleChange, handleUpdateSubmit }) => {
+const ClassCreateForm = ({ values, setValues, handleChange, handleUpdateSubmit, sections, handleSectionChange }) => {
     const { name, code } = values;
+
     return (
         <form onSubmit={handleUpdateSubmit}>
 
@@ -24,6 +25,16 @@ const ClassCreateForm = ({ values, setValues, handleChange, handleUpdateSubmit }
 
                 </select>
             </div>
+            
+            <div className='form-group m-2'>
+                <label className='text-primary'>Class Sections</label>
+                <select name="sections" className='form-control' onChange={handleSectionChange} multiple>
+                    {sections.map((s) => <option value={s._id}  selected={values.sections.find((i)=> s._id=== i._id )} >{s.name} </option>
+
+                    )}
+
+                </select>
+             </div>   
 
             <br />
             <button type="submit" className='btn btn-outline-primary'> Save</button>

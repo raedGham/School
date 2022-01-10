@@ -11,12 +11,19 @@ const SubjectsList = ({ subjects, handleEditClick, handleUpdateSubmit, handleDel
                     </tr>
                 </thead>
                 <tbody>
-                    {subjects.map((t) => <tr key={t._id}>
+                    {subjects.map((t) => <>
+                    
+                    <tr key={t._id}>
                         <td>{t.name}</td>
                         <td>{t.code}</td>
                         <td> <a className='text-primary fa fa-edit' onClick={() => handleEditClick(t)} /></td>
                         <td> <a className='text-danger fas fa-trash' onClick={() => handleDelete(t._id)} /></td>
-                    </tr>)}
+                    </tr>
+                    <tr>
+                       {t.subs.map((s,i) => <td className='sectionsfont' key={i}> {s.code}/{s.name}| </td>)}
+                   </tr>
+                   </>
+                    )}
                 </tbody>
             </table>
 

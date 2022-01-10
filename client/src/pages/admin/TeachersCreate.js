@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import TeacherCreateForm from '../../components/forms/Teachers/TeacherCreateForm';
 import TeacherUpdateForm from "../../components/forms/Teachers/TeacherUpdateForm";
 
-
+import { FaChalkboardTeacher} from "react-icons/fa";
 
 const TeachersCreate = () => {
     const initialState = {
@@ -118,8 +118,8 @@ const TeachersCreate = () => {
                 <div className="col-md-2 p-0">  <AdminNav /></div>
 
                 <div className="col-md-4 text-left">
-                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fas fa-chalkboard-teacher fa-2x"></i>
+                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>                       
+                        <FaChalkboardTeacher className='iconLabelsize'/>      
                         <span className='h4'> Teachers </span>
                     </>)}
 

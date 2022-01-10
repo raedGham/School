@@ -64,6 +64,13 @@ code {
   text-decoration: none;
 }
 
+.iconsize {
+  font-size: 22px  !important;
+}
+
+.iconLabelsize {
+  font-size: 36px  !important;
+}
 .sectionsfont {
   font-size: 12px  !important;
   color:rgb(172, 169, 169);

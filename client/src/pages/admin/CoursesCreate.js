@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import CourseCreateForm from '../../components/forms/Courses/CoursesCreateForm';
 import CourseUpdateForm from "../../components/forms/Courses/CoursesUpdateForm";
-
+import {FaBookOpen} from "react-icons/fa";
 
 
 const CoursesCreate = () => {
@@ -144,7 +144,7 @@ const CoursesCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fas fa-book-open fa-2x"></i>
+                        <FaBookOpen className='iconLabelsize'/>  
                         <span className='h4'> Courses </span>
                     </>)}
 

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import SectionCreateForm from '../../components/forms/Sections/SectionCreateForm';
 import SectionUpdateForm from "../../components/forms/Sections/SectionUpdateForm";
-
+import {FaBuromobelexperte} from  "react-icons/fa";
 
 
 const SectionsCreate = () => {
@@ -117,8 +117,8 @@ const SectionsCreate = () => {
                 <div className="col-md-2 p-0">  <AdminNav /></div>
 
                 <div className="col-md-4 text-left">
-                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fab fa-buromobelexperte fa-2x"></i>
+                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>                        
+                        <FaBuromobelexperte className='iconLabelsize'/>  
                         <span className='h4'> Sections </span>
                     </>)}
 

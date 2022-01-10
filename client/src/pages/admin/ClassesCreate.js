@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import ClassCreateForm from '../../components/forms/Classes/ClassCreateForm';
 import ClassUpdateForm from "../../components/forms/Classes/ClassUpdateForm";
-
+import {FaChalkboard} from "react-icons/fa";
 
 
 const ClassesCreate = () => {
@@ -142,7 +142,8 @@ const ClassesCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fas fa-chalkboard fa-2x"></i>
+                     
+                        < FaChalkboard className='iconLabelsize'/>  
                         <span className='h4'> Classes </span>
                     </>)}
 

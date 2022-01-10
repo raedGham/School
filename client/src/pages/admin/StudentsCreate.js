@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import StudentCreateForm from '../../components/forms/Students/StudentCreateForm';
 import StudentUpdateForm from "../../components/forms/Students/StudentUpdateForm";
 import ReactPaginate from "react-paginate";
+import {FaBookReader} from  "react-icons/fa";
 
 const StudentsCreate = () => {
     const initialState = {
@@ -130,7 +131,8 @@ const StudentsCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fas fa-book-reader fa-2x"></i>
+                     
+                        <FaBookReader className='iconLabelsize'/>  
                         <span className='h4'> Students </span>
                     </>)}
                     {<StudentsList students={students} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}

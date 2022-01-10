@@ -12,6 +12,7 @@ import CoursesCreate from './pages/admin/CoursesCreate';
 import ClassesCreate from './pages/admin/ClassesCreate';
 import SubCoursesCreate from './pages/admin/SubCoursesCreate';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import UsersCreate from './pages/admin/UsersCreate';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/admin/courses" exact element={<CoursesCreate />} />
           <Route path="/admin/classes" exact element={<ClassesCreate />} />
           <Route path="/admin/subs" exact element={<SubCoursesCreate />} />
+          <Route path="/user/accounts" exact element={<UsersCreate />} />
         </Routes>
       </BrowserRouter>
 

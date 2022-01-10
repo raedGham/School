@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import SubCourseCreateForm from '../../components/forms/SubCourses/SubCoursesCreateForm';
 import SubCourseUpdateForm from "../../components/forms/SubCourses/SubCoursesUpdateForm";
-
+import {FaSwatchbook} from  "react-icons/fa";
 
 
 const SubCoursesCreate = () => {
@@ -118,7 +118,8 @@ const SubCoursesCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <i className="fas fa-swatchbook fa-2x"></i>
+                      
+                        <FaSwatchbook className='iconLabelsize'/>
                         <span className='h4'> Sub Courses </span>
                     </>)}
                     {console.log(subCourses)}

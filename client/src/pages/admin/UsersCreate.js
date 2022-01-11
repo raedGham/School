@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 //import { createUser, getUsers, updateUser, removeUser } from '../../functions/user';
-//import UsersList from '../../components/forms/Users/UsersList';
+import { getUsers } from '../../functions/user';
+import UsersList from '../../components/forms/Users/UsersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { ImUsers } from "react-icons/im";
@@ -14,7 +15,7 @@ const UsersCreate = () => {
     const initialState = {
         name: "",
         email: "",
-        role: "teacher",   
+        role: "teacher",
     }
     const [values, setValues] = useState(initialState);
 
@@ -72,13 +73,13 @@ const UsersCreate = () => {
     useEffect(() => loadUsers(), []);
 
     const loadUsers = () => {
-        // if (show) setShow(false);
-        // if (showUpdate) setShowUpdate(false);
-        // getUsers()
-        //     .then((t) => {
-        //         setUsers(t.data);
-        //     }
-        //     )
+        if (show) setShow(false);
+        if (showUpdate) setShowUpdate(false);
+        getUsers()
+            .then((u) => {
+                setUsers(u.data);
+            }
+            )
     }
 
     const addUser = () => {
@@ -116,13 +117,13 @@ const UsersCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <ImUsers className='iconLabelsize'/>                        
+                        <ImUsers className='iconLabelsize' />
                         <span className='h4'> Users </span>
                     </>)}
 
-                    {/* {<UsersList users={users} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />} */}
+                    {<UsersList users={users} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
                 </div>
-             
+
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addUser} hidden={showUpdate} >Add User</button>

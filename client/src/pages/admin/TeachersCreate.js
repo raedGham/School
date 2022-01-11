@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 import { createTeacher, getTeachers, updateTeacher, removeTeacher } from '../../functions/teacher';
-import {createUser} from '../../functions/auth';
+import { createUser } from '../../functions/auth';
 import TeachersList from '../../components/forms/Teachers/TeachersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import TeacherCreateForm from '../../components/forms/Teachers/TeacherCreateForm';
 import TeacherUpdateForm from "../../components/forms/Teachers/TeacherUpdateForm";
 
-import { FaChalkboardTeacher} from "react-icons/fa";
+import { FaChalkboardTeacher } from "react-icons/fa";
 
 const TeachersCreate = () => {
     const initialState = {
@@ -18,7 +18,8 @@ const TeachersCreate = () => {
         mobile: undefined,
         birthDate: "",
         startDate: "",
-        degree: ""
+        degree: "",
+        hasAccount: false
 
     }
     const [values, setValues] = useState(initialState);
@@ -115,20 +116,33 @@ const TeachersCreate = () => {
     }
 
     const addUser = (t) => {
-    //   console.log("t", t)
-      const userData = {
-          name: t.name,
-          email: t.email,
-      }
-      createUser(userData, user.token).then(res => console.log(res));
-       
-       const teach =teachers.map((item)=> {
-          if (item._id == t._id) {
-              item.hasAccount = true;
-          }
-      })
-      
-      setTeachers(teach);
+        //   console.log("t", t)
+        const userData = {
+            name: t.name,
+            email: t.email,
+        }
+        createUser(userData, user.token).then(res => console.log(res));
+
+        const teacherUpdate = { ...t, hasAccount: true };
+        //   console.log("teacherUpdate", teacherUpdate);
+        updateTeacher(teacherUpdate, user.token)
+            .then(res => {
+                console.log("UPDATED")
+
+                toast.success(` Updated Sucessfully`)
+                setTimeout(() => {
+                    setShowUpdate(false);
+                    loadTeachers();
+                    return
+                }, 500);
+            })
+            .catch((err) => console.log("Update Teacher catch err", err))
+
+
+
+
+
+
     }
 
     return (
@@ -137,8 +151,8 @@ const TeachersCreate = () => {
                 <div className="col-md-2 p-0">  <AdminNav /></div>
 
                 <div className="col-md-4 text-left">
-                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>                       
-                        <FaChalkboardTeacher className='iconLabelsize'/>      
+                    {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
+                        <FaChalkboardTeacher className='iconLabelsize' />
                         <span className='h4'> Teachers </span>
                     </>)}
 

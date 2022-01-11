@@ -1,23 +1,21 @@
 import React from 'react';
-import { BsCheck } from "react-icons/bs";
-import { HiUserAdd } from "react-icons/hi";
-const TeachersList = ({ teachers, handleEditClick, handleUpdateSubmit, handleDelete, addUser }) => {
+
+const UsersList = ({ users, handleEditClick, handleUpdateSubmit, handleDelete }) => {
     return (
         <div>
             <table className='table table-outline' onSubmit={handleUpdateSubmit}>
                 <thead className='thead'>
                     <tr>
-                        <th scope="col">Account</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Role</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {teachers.map((t) => <tr key={t._id}>
-                        {t.hasAccount ? (<td className='text-primary'>< BsCheck /> </td>) : (<td> <a className='iconsize' onClick={() => addUser(t)}><HiUserAdd /></a></td>)}
-
+                    {users.map((t) => <tr key={t._id}>
                         <td>{t.name}</td>
                         <td>{t.email}</td>
+                        <td>{t.role}</td>
                         <td> <a className='text-primary fa fa-edit' onClick={() => handleEditClick(t)} /></td>
                         <td> <a className='text-danger fas fa-trash' onClick={() => handleDelete(t._id)} /></td>
                     </tr>)}
@@ -29,4 +27,4 @@ const TeachersList = ({ teachers, handleEditClick, handleUpdateSubmit, handleDel
     );
 };
 
-export default TeachersList;
+export default UsersList;

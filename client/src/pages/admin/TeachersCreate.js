@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 import { createTeacher, getTeachers, updateTeacher, removeTeacher } from '../../functions/teacher';
+import {createUser} from '../../functions/auth';
 import TeachersList from '../../components/forms/Teachers/TeachersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -112,6 +113,24 @@ const TeachersCreate = () => {
                 })
         }
     }
+
+    const addUser = (t) => {
+    //   console.log("t", t)
+      const userData = {
+          name: t.name,
+          email: t.email,
+      }
+      createUser(userData, user.token).then(res => console.log(res));
+       
+       const teach =teachers.map((item)=> {
+          if (item._id == t._id) {
+              item.hasAccount = true;
+          }
+      })
+      
+      setTeachers(teach);
+    }
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -123,7 +142,7 @@ const TeachersCreate = () => {
                         <span className='h4'> Teachers </span>
                     </>)}
 
-                    {<TeachersList teachers={teachers} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
+                    {<TeachersList teachers={teachers} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} addUser={(t) => addUser(t)} />}
                 </div>
                 {console.log("SHOW", show)}
                 {console.log("SHOWUPDATE", showUpdate)}

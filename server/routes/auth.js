@@ -7,12 +7,14 @@ const router = express.Router();
 const { authCheck, adminCheck } = require("../middleware/auth")
 
 // controller
-const { createOrUpdateUser, currentUser } = require('../controller/auth');
+const { createOrUpdateUser, currentUser, createUser } = require('../controller/auth');
 
 
 
 //route
 router.post("/create-or-update-user", authCheck, createOrUpdateUser);
+
+router.post("/create-user", authCheck, createUser);
 
 router.post("/current-user", authCheck, currentUser);
 

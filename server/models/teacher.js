@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-//const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
 
 
 const teacherSchema = new mongoose.Schema({
@@ -10,7 +10,9 @@ const teacherSchema = new mongoose.Schema({
     mobile: Number,    
     birthDate: Date,
     startDate: Date,
-    degree: String
+    degree: String,
+    hasAccount: {type: Boolean, default: false} ,
+    account:  { type: ObjectId, ref: "User" }
 }, { timestamps: true });
 
 

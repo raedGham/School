@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsCheck} from "react-icons/bs";
 import {HiUserAdd} from "react-icons/hi";
-const TeachersList = ({ teachers , handleEditClick, handleUpdateSubmit, handleDelete}) => { 
+const TeachersList = ({ teachers , handleEditClick, handleUpdateSubmit, handleDelete,addUser}) => { 
     return (
         <div>
             <table className='table table-outline' onSubmit = {handleUpdateSubmit}>
@@ -14,7 +14,7 @@ const TeachersList = ({ teachers , handleEditClick, handleUpdateSubmit, handleDe
                 </thead>
                 <tbody>
                     {teachers.map((t) => <tr key={t._id}>
-                        {t.hasAccount?(<td className='text-primary text-center'>< BsCheck/> </td>) :( <td> <a className='iconsize'><HiUserAdd/></a></td>)} 
+                        {t.hasAccount?(<td className='text-primary text-center'>< BsCheck/> </td>) :( <td> <a className='iconsize' onClick={() => addUser(t)}><HiUserAdd/></a></td>)} 
 
                         <td>{t.name}</td>
                         <td>{t.email}</td>

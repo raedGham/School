@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 import { createUser, getUsers, updateUser, removeUser } from '../../functions/user';
-//import { createUser, getUsers } from '../../functions/user';
+import { auth } from '../../firebase';
+import { createUserWithEmailAndPassword, updatePassword } from 'firebase/auth';
 import UsersList from '../../components/forms/Users/UsersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { ImUsers } from "react-icons/im";
 import UserCreateForm from '../../components/forms/Users/UserCreateForm';
 import UserUpdateForm from "../../components/forms/Users/UserUpdateForm";
+
 
 
 
@@ -37,6 +39,10 @@ const UsersCreate = () => {
                 setTimeout(() => {
                     setShow(false);
                     loadUsers();
+                    console.log(auth);
+                    createUserWithEmailAndPassword(auth, values.email, password)
+                        .then((cred) => toast.success("Account ready for use..."))
+                        .catch((err) =>console.log(err));
                     return
                 }, 500);
             })

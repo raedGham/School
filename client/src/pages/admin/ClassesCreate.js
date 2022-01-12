@@ -89,6 +89,7 @@ const ClassesCreate = () => {
     const loadSections = () => {
         getSections()
             .then((s) => {
+                console.log("sections",sections);
                 setSections(s.data);
             }
             )

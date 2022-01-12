@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
-//import { createUser, getUsers, updateUser, removeUser } from '../../functions/user';
-import { getUsers } from '../../functions/user';
+import { createUser, getUsers, updateUser, removeUser } from '../../functions/user';
+//import { createUser, getUsers } from '../../functions/user';
 import UsersList from '../../components/forms/Users/UsersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { ImUsers } from "react-icons/im";
-// import UserCreateForm from '../../components/forms/Users/UserCreateForm';
-// import UserUpdateForm from "../../components/forms/Users/UserUpdateForm";
+import UserCreateForm from '../../components/forms/Users/UserCreateForm';
+import UserUpdateForm from "../../components/forms/Users/UserUpdateForm";
 
 
 
@@ -18,7 +18,7 @@ const UsersCreate = () => {
         role: "teacher",
     }
     const [values, setValues] = useState(initialState);
-
+    const [password, setPassword] = useState("");
     const { user } = useSelector(state => ({ ...state }));
 
     const [users, setUsers] = useState([]);
@@ -30,45 +30,71 @@ const UsersCreate = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("User", user);
-        // createUser(values, user.token)
-        //     .then(res => {
-        //         toast.success(`${res.data.name} created Sucessfully`)
-        //         setTimeout(() => {
-        //             setShow(false);
-        //             loadUsers();
-        //             return
-        //         }, 500);
-        //     })
-        //     .catch(err => {
-        //         console.log("create User catch err", err.response)
-        //         if (err.response.status === 400) toast.error(err.response.data);
-        //     })
+        console.log("User un handle submit", user);
+        createUser(values, user.token)
+            .then(res => {
+                toast.success(`${res.data.name} created Sucessfully`);
+                setTimeout(() => {
+                    setShow(false);
+                    loadUsers();
+                    return
+                }, 500);
+            })
+            .catch(err => {
+                console.log("create User catch err", err.response)
+                //if (err.response.status === 400) toast.error(err.response.data);
+            })
     };
 
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
+    // validation
+    if (!values.email || !password) {
+        toast.error("Email and password is required");
+        return;
+      }
+  
+      if (password.length < 6) {
+        toast.error("Password must be at least 6 characters long");
+        return;
+      }
 
-        // updateUser(values, user.token)
-        //     .then(res => {
-        //         console.log("UPDATED")
+        updateUser(values, user.token)
+            .then(res => {
+                console.log("UPDATED")
 
-        //         toast.success(` Updated Sucessfully`)
-        //         setTimeout(() => {
-        //             setShowUpdate(false);
-        //             loadUsers();
-        //             return
-        //         }, 500);
-        //     })
-        //     .catch((err) => console.log("Update User catch err", err))
+                toast.success(` Updated Sucessfully`)
+                setTimeout(() => {
+                    setShowUpdate(false);
+                    loadUsers();
+                    return
+                }, 500);
+            })
+            .catch((err) => console.log("Update User catch err", err))
 
     };
 
 
     const handleChange = (e) => {
+        console.log("HANDLE CHANGE");
+        console.log(e.target.value);
+ 
         setValues({ ...values, [e.target.name]: e.target.value })
     }
 
+    const handleRadioChange = (e) => {
+        console.log("HANDLE RADIO CHANGE");
+        console.log(e.target.value);
+ 
+        setValues({ ...values, role: e.target.value })
+    }
+
+    const handlePasswordChange = (e) => {
+        console.log("HANDLE Password CHANGE");
+        console.log(e.target.value);
+ 
+        setPassword(e.target.value)
+    }
 
     useEffect(() => loadUsers(), []);
 
@@ -97,18 +123,18 @@ const UsersCreate = () => {
     }
 
     const handleDelete = (id) => {
-        // if (window.confirm("Delete?")) {
-        //     removeUser(id, user.token)
-        //         .then(res => {
-        //             toast.error(`${res.data.name} REMOVED`);
-        //             setTimeout(() => {
-        //                 loadUsers()
-        //                 return;
-        //             }, 500);
-        //         }).catch((err) => {
-        //             if (err.response.status === 400) toast.error(err.response.data)
-        //         })
-        // }
+        if (window.confirm("Delete?")) {
+            removeUser(id, user.token)
+                .then(res => {
+                    toast.error(`${res.data.name} REMOVED`);
+                    setTimeout(() => {
+                        loadUsers()
+                        return;
+                    }, 500);
+                }).catch((err) => {
+                    if (err.response.status === 400) toast.error(err.response.data)
+                })
+        }
     }
     return (
         <div className="container-fluid">
@@ -127,8 +153,16 @@ const UsersCreate = () => {
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addUser} hidden={showUpdate} >Add User</button>
-                        {/* {show ? (<UserCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} />) : ""}
-                        {showUpdate ? <UserUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""} */}
+                        {show ? (<UserCreateForm 
+                                                values={values} 
+                                                password={password} 
+                                                setValues={setValues} 
+                                                handleChange={handleChange} 
+                                                handleSubmit={handleSubmit} 
+                                                handleRadioChange={handleRadioChange}
+                                                handlePasswordChange={ handlePasswordChange} 
+                                    />) : ""} 
+                        {showUpdate ? <UserUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""} 
                     </>
 
                     )}

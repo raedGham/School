@@ -9,6 +9,7 @@ import TeacherCreateForm from '../../components/forms/Teachers/TeacherCreateForm
 import TeacherUpdateForm from "../../components/forms/Teachers/TeacherUpdateForm";
 
 import { FaChalkboardTeacher } from "react-icons/fa";
+import Search from '../../components/search/search';
 
 const TeachersCreate = () => {
     const initialState = {
@@ -26,6 +27,8 @@ const TeachersCreate = () => {
 
     const { user } = useSelector(state => ({ ...state }));
     const [teachers, setTeachers] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
@@ -137,14 +140,17 @@ const TeachersCreate = () => {
                 }, 500);
             })
             .catch((err) => console.log("Update Teacher catch err", err))
-
-
-
-
-
-
     }
 
+    const handleSearchChange = (e) => {
+        setTextSearch(e.target.value);
+        if (textSearch !== "") {
+            const filteredStudents = teachers.filter((teacher) => {
+                return Object.values(teacher).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            });
+            setSearchResults(filteredStudents);
+        }
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -155,8 +161,11 @@ const TeachersCreate = () => {
                         <FaChalkboardTeacher className='iconLabelsize' />
                         <span className='h4'> Teachers </span>
                     </>)}
-
-                    {<TeachersList teachers={teachers} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} addUser={(t) => addUser(t)} />}
+                    <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
+                    {<TeachersList teachers={textSearch.length < 1 ? teachers : searchResults}
+                        handleEditClick={(t) => handleEditClick(t)}
+                        handleDelete={(t) => handleDelete(t)}
+                        addUser={(t) => addUser(t)} />}
                 </div>
                 {console.log("SHOW", show)}
                 {console.log("SHOWUPDATE", showUpdate)}

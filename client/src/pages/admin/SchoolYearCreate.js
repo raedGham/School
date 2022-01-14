@@ -1,112 +1,111 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
-import { createSection, getSections, updateSection, removeSection } from '../../functions/section';
-import SectionsList from '../../components/forms/Sections/SectionsList';
+import { createYear, getYears, updateYear, removeYear } from '../../functions/schoolYear';
+// import { auth } from '../../firebase';
+import YearsList from '../../components/forms/SchoolYear/YearsList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import SectionCreateForm from '../../components/forms/Sections/SectionCreateForm';
-import SectionUpdateForm from "../../components/forms/Sections/SectionUpdateForm";
-import { FaBuromobelexperte } from "react-icons/fa";
+import { FaCalendar } from "react-icons/fa";
+import YearCreateForm from '../../components/forms/SchoolYear/YearCreateForm';
+import YearUpdateForm from "../../components/forms/SchoolYear/YearUpdateForm";
+
 import Search from '../../components/search/search';
 
-const SectionsCreate = () => {
+
+const YearsCreate = () => {
     const initialState = {
         name: "",
-        code: "",
+        Description: "",
+
     }
     const [values, setValues] = useState(initialState);
-
     const { user } = useSelector(state => ({ ...state }));
-    const [sections, setSections] = useState([]);
+
+    const [years, setYears] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [textSearch, setTextSearch] = useState("");
 
     const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState();
-    const [showUpdate, setShowUpdate] = useState();
-
+    const [show, setShow] = useState(false);
+    const [showUpdate, setShowUpdate] = useState(false);
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("User", user);
-        createSection(values, user.token)
+
+        createYear(values, user.token)
             .then(res => {
-                toast.success(`${res.data.name} created Sucessfully`)
-
+                toast.success(`${res.data.name} created Sucessfully`);
                 setTimeout(() => {
-
                     setShow(false);
-                    loadSections();
-                    return
-                }
-
-                    , 1000);
+                    loadYears();
+                }, 500);
             })
             .catch(err => {
-                console.log("create Section catch err", err.response)
-                if (err.response.status === 400) toast.error(err.response.data);
+                console.log("create Year catch err", err.response)
+                //if (err.response.status === 400) toast.error(err.response.data);
             })
     };
 
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
-
-        updateSection(values, user.token)
+        updateYear(values, user.token)
             .then(res => {
+                console.log("UPDATED")
+
                 toast.success(` Updated Sucessfully`)
                 setTimeout(() => {
                     setShowUpdate(false);
-                    loadSections();
+                    loadYears();
                     return
-                }, 1000);
+                }, 500);
             })
-            .catch((err) => console.log("Update Section catch err", err))
+            .catch((err) => console.log("Update Year catch err", err))
 
     };
 
 
     const handleChange = (e) => {
+        console.log("HANDLE CHANGE");
+        console.log(e.target.value);
+
         setValues({ ...values, [e.target.name]: e.target.value })
     }
 
+    useEffect(() => loadYears(), []);
 
-    useEffect(() => {
-        console.log("load section executes from useEffect");
-        loadSections()
-    }, []);
-
-    const loadSections = () => {
-        getSections()
-            .then((t) => {
-                setSections(t.data);
+    const loadYears = () => {
+        if (show) setShow(false);
+        if (showUpdate) setShowUpdate(false);
+        getYears()
+            .then((u) => {
+                setYears(u.data);
             }
             )
     }
 
-    const addSection = () => {
+    const addYear = () => {
         setValues(initialState);
         if (showUpdate) setShowUpdate(false);
         if (!show) setShow(true);
-
     }
 
 
     const handleEditClick = (t) => {
         setValues({ ...t });
-        //   console.log(values);
+        console.log(values);
         if (show) setShow(false);
         if (!showUpdate) setShowUpdate(true);
     }
 
     const handleDelete = (id) => {
         if (window.confirm("Delete?")) {
-            removeSection(id, user.token)
+            removeYear(id, user.token)
                 .then(res => {
                     toast.error(`${res.data.name} REMOVED`);
                     setTimeout(() => {
-                        loadSections();
-                        return
+                        loadYears()
+                        return;
                     }, 500);
                 }).catch((err) => {
                     if (err.response.status === 400) toast.error(err.response.data)
@@ -114,13 +113,14 @@ const SectionsCreate = () => {
         }
     }
 
+
     const handleSearchChange = (e) => {
         setTextSearch(e.target.value);
         if (textSearch !== "") {
-            const filteredSections = sections.filter((section) => {
-                return Object.values(section).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            const filteredYears = years.filter((u) => {
+                return Object.values(u).join(" ").toLowerCase().includes(textSearch.toLowerCase());
             });
-            setSearchResults(filteredSections);
+            setSearchResults(filteredYears);
         }
     }
     return (
@@ -130,32 +130,37 @@ const SectionsCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <FaBuromobelexperte className='iconLabelsize' />
-                        <span className='h4'> Sections </span>
+                        <FaCalendar className='iconLabelsize' />
+                        <span className='h4'> School Years </span>
                     </>)}
                     <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
-                    {<SectionsList sections={textSearch.length < 1 ? sections : searchResults}
+                    {<YearsList users={textSearch.length < 1 ? years : searchResults}
                         handleEditClick={(t) => handleEditClick(t)}
-                        handleDelete={(t) => handleDelete(t)} />}
+                        handleDelete={(t) => handleDelete(t)}
+                    />}
                 </div>
-                {console.log("SHOW", show)}
-                {console.log("SHOWUPDATE", showUpdate)}
+
                 <div className="col-md-5 text-left m-2">
+
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <button className='btn btn-primary ml-4' onClick={addSection} hidden={showUpdate} >Add Section</button>
-                        {show ? (<SectionCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} />) : ""}
-                        {showUpdate ? <SectionUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
+                        <button className='btn btn-primary ml-4' onClick={addYear} hidden={showUpdate} >Add School Year</button>
+                        {show ? (<YearCreateForm
+                            values={values}
+                            setValues={setValues}
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+
+                        />) : ""}
+                        {showUpdate ? <YearUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
                     </>
 
                     )}
 
-
                 </div>
-
 
             </div>
         </div>
     );
 };
 
-export default SectionsCreate;
+export default YearsCreate;

@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import ClassCreateForm from '../../components/forms/Classes/ClassCreateForm';
 import ClassUpdateForm from "../../components/forms/Classes/ClassUpdateForm";
-import {FaChalkboard} from "react-icons/fa";
-
+import { FaChalkboard } from "react-icons/fa";
+import Search from '../../components/search/search';
 
 const ClassesCreate = () => {
     const initialState = {
@@ -21,6 +21,9 @@ const ClassesCreate = () => {
 
     const { user } = useSelector(state => ({ ...state }));
     const [classes, setClasses] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
+
     const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState();
@@ -89,7 +92,7 @@ const ClassesCreate = () => {
     const loadSections = () => {
         getSections()
             .then((s) => {
-                console.log("sections",sections);
+                console.log("sections", sections);
                 setSections(s.data);
             }
             )
@@ -136,6 +139,16 @@ const ClassesCreate = () => {
         setValues({ ...values, sections: value })
     }
 
+    const handleSearchChange = (e) => {
+        setTextSearch(e.target.value);
+        if (textSearch !== "") {
+            const filteredClasses = classes.filter((C) => {
+                return Object.values(C).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            });
+            setSearchResults(filteredClasses);
+        }
+    }
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -143,12 +156,14 @@ const ClassesCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                     
-                        < FaChalkboard className='iconLabelsize'/>  
+
+                        < FaChalkboard className='iconLabelsize' />
                         <span className='h4'> Classes </span>
                     </>)}
-
-                    {<ClassesList classes={classes} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
+                    <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
+                    {<ClassesList classes={textSearch.length < 1 ? classes : searchResults}
+                        handleEditClick={(t) => handleEditClick(t)}
+                        handleDelete={(t) => handleDelete(t)} />}
                 </div>
                 {console.log("SHOW", show)}
                 {console.log("SHOWUPDATE", showUpdate)}
@@ -163,14 +178,14 @@ const ClassesCreate = () => {
                             sections={sections}
                             handleSectionChange={handleSectionChange} />) : ""}
 
-                        {showUpdate ? <ClassUpdateForm 
-                                                    values={values} 
-                                                    setValues={setValues} 
-                                                    handleChange={handleChange} 
-                                                    handleUpdateSubmit={handleUpdateSubmit} 
-                                                    sections={sections}
-                                                    handleSectionChange={handleSectionChange}
-                                                    /> : ""}
+                        {showUpdate ? <ClassUpdateForm
+                            values={values}
+                            setValues={setValues}
+                            handleChange={handleChange}
+                            handleUpdateSubmit={handleUpdateSubmit}
+                            sections={sections}
+                            handleSectionChange={handleSectionChange}
+                        /> : ""}
                     </>
 
                     )}

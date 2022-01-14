@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 import { createCourse, getCourses, updateCourse, removeCourse } from '../../functions/course';
-import {getSubCourses} from '../../functions/subCourse';
+import { getSubCourses } from '../../functions/subCourse';
 import CoursesList from '../../components/forms/Courses/CoursesList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import CourseCreateForm from '../../components/forms/Courses/CoursesCreateForm';
 import CourseUpdateForm from "../../components/forms/Courses/CoursesUpdateForm";
-import {FaBookOpen} from "react-icons/fa";
-
+import { FaBookOpen } from "react-icons/fa";
+import Search from '../../components/search/search';
 
 const CoursesCreate = () => {
     const initialState = {
         name: "",
         code: "",
-        subs:[]
+        subs: []
     }
     const [values, setValues] = useState(initialState);
 
     const { user } = useSelector(state => ({ ...state }));
     const [courses, setCourses] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
     const [loading, setLoading] = useState(false);
     const [subs, setSubs] = useState([]);
     const [show, setShow] = useState();
@@ -83,7 +85,7 @@ const CoursesCreate = () => {
                 setCourses(t.data);
             }
             )
-            .catch((err)=> console.log("ERR SUBJECTS===> ", err))
+            .catch((err) => console.log("ERR SUBJECTS===> ", err))
     }
 
     const loadSubs = () => {
@@ -91,8 +93,8 @@ const CoursesCreate = () => {
             .then((s) => {
                 setSubs(s.data);
             })
-            .catch((err)=> console.log("ERR SUBS===> ", err))
-            
+            .catch((err) => console.log("ERR SUBS===> ", err))
+
     }
     const addCourse = () => {
         setValues(initialState);
@@ -135,7 +137,15 @@ const CoursesCreate = () => {
         console.log("value---->", value)
         setValues({ ...values, subs: value })
     }
-
+    const handleSearchChange = (e) => {
+        setTextSearch(e.target.value);
+        if (textSearch !== "") {
+            const filteredCourses = courses.filter((course) => {
+                return Object.values(course).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            });
+            setSearchResults(filteredCourses);
+        }
+    }
 
     return (
         <div className="container-fluid">
@@ -144,25 +154,27 @@ const CoursesCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                        <FaBookOpen className='iconLabelsize'/>  
+                        <FaBookOpen className='iconLabelsize' />
                         <span className='h4'> Courses </span>
                     </>)}
-
-                    {<CoursesList courses={courses} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
+                    <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
+                    {<CoursesList courses={textSearch.length < 1 ? courses : searchResults}
+                        handleEditClick={(t) => handleEditClick(t)}
+                        handleDelete={(t) => handleDelete(t)} />}
                 </div>
                 {console.log("SHOW", show)}
                 {console.log("SHOWUPDATE", showUpdate)}
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addCourse} hidden={showUpdate} >Add Course</button>
-                        {show ? (<CourseCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} subs = {subs}
-                                                         handleSubChange={handleSubChange} />) : ""}
-                        {showUpdate ? <CourseUpdateForm values={values} 
-                                                         setValues={setValues} 
-                                                         handleChange={handleChange} 
-                                                         handleUpdateSubmit={handleUpdateSubmit} 
-                                                         subs = {subs}
-                                                         handleSubChange={handleSubChange} /> : ""}
+                        {show ? (<CourseCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} subs={subs}
+                            handleSubChange={handleSubChange} />) : ""}
+                        {showUpdate ? <CourseUpdateForm values={values}
+                            setValues={setValues}
+                            handleChange={handleChange}
+                            handleUpdateSubmit={handleUpdateSubmit}
+                            subs={subs}
+                            handleSubChange={handleSubChange} /> : ""}
                     </>
 
                     )}

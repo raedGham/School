@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux';
 import StudentCreateForm from '../../components/forms/Students/StudentCreateForm';
 import StudentUpdateForm from "../../components/forms/Students/StudentUpdateForm";
 import ReactPaginate from "react-paginate";
-import {FaBookReader} from  "react-icons/fa";
+import { FaBookReader } from "react-icons/fa";
+import Search from '../../components/search/search';
 
 const StudentsCreate = () => {
     const initialState = {
@@ -25,9 +26,15 @@ const StudentsCreate = () => {
     const [page, setPage] = useState(0);
     const { user } = useSelector(state => ({ ...state }));
     const [students, setStudents] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState();
     const [showUpdate, setShowUpdate] = useState();
+
+
+
     const perPage = 5;
 
 
@@ -124,6 +131,17 @@ const StudentsCreate = () => {
 
     const pageCount = studentsCount / perPage;
 
+    const handleSearchChange = (e) => {
+        setTextSearch(e.target.value);
+        if (textSearch !== "") {
+            const filteredStudents = students.filter((student) => {
+                return Object.values(student).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            });
+            setSearchResults(filteredStudents);
+        }
+    }
+
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -131,11 +149,20 @@ const StudentsCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                     
-                        <FaBookReader className='iconLabelsize'/>  
+
+                        <FaBookReader className='iconLabelsize' />
                         <span className='h4'> Students </span>
                     </>)}
-                    {<StudentsList students={students} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
+                    <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
+                    {<StudentsList
+                        students={textSearch.length < 1 ? students : searchResults}
+                        handleEditClick={(t) => handleEditClick(t)}
+                        handleDelete={(t) => handleDelete(t)}
+
+
+                    />
+
+                    }
                     <ReactPaginate
                         previousLabel={'< Previous'}
                         nextLabel={'Next >'}

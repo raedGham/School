@@ -21,11 +21,11 @@ export const updateUser = async (user, authToken) => {
         .catch((err) => console.log("Error in funct", err));
 }
 
-export const resetPass = async (email, password) => {
+export const resetPass = async (email, password, authToken) => {
     //console.log(user);
     //  console.log(password);
     // console.log(authToken);
-    return await axios.post(`${process.env.REACT_APP_API}/user/resetpass`, { email, password })
+    return await axios.post(`${process.env.REACT_APP_API}/user/resetpass`, { email, password }, { headers: { authToken } })
         .then((res) => console.log(res))
         .catch((err) => console.log("Error in funct", err));
 }

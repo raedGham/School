@@ -155,3 +155,22 @@ span {
 .pointer {
   cursor: pointer !important ;
 }
+
+.bold {
+  font-weight: 700 !important;
+}
+
+.vertalign {
+  vertical-align: middle !important;
+  width: 50%;
+  height: 50px;
+   padding: 20px;
+ 
+}
+
+
+
+.spanf {
+  font-weight: 400;
+  color: rgb(6, 105, 187)
+}

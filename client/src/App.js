@@ -13,6 +13,7 @@ import ClassesCreate from './pages/admin/ClassesCreate';
 import SubCoursesCreate from './pages/admin/SubCoursesCreate';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UsersCreate from './pages/admin/UsersCreate';
+import YearsCreate from './pages/admin/SchoolYearCreate';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -33,7 +34,9 @@ function App() {
           <Route path="/admin/courses" exact element={<CoursesCreate />} />
           <Route path="/admin/classes" exact element={<ClassesCreate />} />
           <Route path="/admin/subs" exact element={<SubCoursesCreate />} />
+          <Route path="/admin/schoolyears" exact element={<YearsCreate />} />
           <Route path="/user/accounts" exact element={<UsersCreate />} />
+
         </Routes>
       </BrowserRouter>
 

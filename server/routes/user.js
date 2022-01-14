@@ -15,6 +15,6 @@ router.post("/user", authCheck, adminCheck, create);          // route to create
 router.get("/users", list);                                  // public route to get a list of all -classes
 router.put("/user/:id", authCheck, adminCheck, update);          // route to update -class
 router.delete("/user/:id", authCheck, adminCheck, remove);          // route to delete -class
-router.post("/user/resetpass", resetPass);
+router.post("/user/resetpass", authCheck, adminCheck, resetPass);
 
 module.exports = router;

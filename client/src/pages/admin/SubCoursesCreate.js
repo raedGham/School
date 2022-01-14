@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import SubCourseCreateForm from '../../components/forms/SubCourses/SubCoursesCreateForm';
 import SubCourseUpdateForm from "../../components/forms/SubCourses/SubCoursesUpdateForm";
-import {FaSwatchbook} from  "react-icons/fa";
-
+import { FaSwatchbook } from "react-icons/fa";
+import Search from '../../components/search/search';
 
 const SubCoursesCreate = () => {
     const initialState = {
@@ -18,6 +18,9 @@ const SubCoursesCreate = () => {
 
     const { user } = useSelector(state => ({ ...state }));
     const [subCourses, setSubCourses] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState();
     const [showUpdate, setShowUpdate] = useState();
@@ -110,7 +113,15 @@ const SubCoursesCreate = () => {
                 })
         }
     }
-
+    const handleSearchChange = (e) => {
+        setTextSearch(e.target.value);
+        if (textSearch !== "") {
+            const filteredSubs = subCourses.filter((subCourse) => {
+                return Object.values(subCourse).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            });
+            setSearchResults(filteredSubs);
+        }
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -118,12 +129,15 @@ const SubCoursesCreate = () => {
 
                 <div className="col-md-4 text-left">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
-                      
-                        <FaSwatchbook className='iconLabelsize'/>
+
+                        <FaSwatchbook className='iconLabelsize' />
                         <span className='h4'> Sub Courses </span>
                     </>)}
-                    {console.log(subCourses)}
-                    {subCourses !== undefined ? <CoursesList subCourses={subCourses} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} /> : <p className='mt-2'>No Subs yet</p>}
+                    <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
+                    <CoursesList subCourses={textSearch.length < 1 ? subCourses : searchResults}
+                        handleEditClick={(t) => handleEditClick(t)}
+                        handleDelete={(t) => handleDelete(t)} />
+
                 </div>
                 {console.log("SHOW", show)}
                 {console.log("SHOWUPDATE", showUpdate)}

@@ -10,7 +10,7 @@ import { ImUsers } from "react-icons/im";
 import UserCreateForm from '../../components/forms/Users/UserCreateForm';
 import UserUpdateForm from "../../components/forms/Users/UserUpdateForm";
 import CPModal from '../../components/modal/changePasswordModal';
-
+import Search from '../../components/search/search';
 
 
 const UsersCreate = () => {
@@ -24,6 +24,9 @@ const UsersCreate = () => {
     const { user } = useSelector(state => ({ ...state }));
 
     const [users, setUsers] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [textSearch, setTextSearch] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
@@ -161,14 +164,22 @@ const UsersCreate = () => {
         console.log(password);
         console.log(ModalUser);
         //console.log(user.token);
-        resetPass(ModalUser.email, password)
+        resetPass(ModalUser.email, password, user.token)
             .then((res) => {
                 toast.success("Password sucessfully changed")
             })
             .catch((err) => console.log(err))
         setModal(false);
     }
-
+    const handleSearchChange = (e) => {
+        setTextSearch(e.target.value);
+        if (textSearch !== "") {
+            const filteredUsers = users.filter((u) => {
+                return Object.values(u).join(" ").toLowerCase().includes(textSearch.toLowerCase());
+            });
+            setSearchResults(filteredUsers);
+        }
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -179,8 +190,8 @@ const UsersCreate = () => {
                         <ImUsers className='iconLabelsize' />
                         <span className='h4'> Users </span>
                     </>)}
-
-                    {<UsersList users={users}
+                    <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
+                    {<UsersList users={textSearch.length < 1 ? users : searchResults}
                         handleEditClick={(t) => handleEditClick(t)}
                         handleDelete={(t) => handleDelete(t)}
                         changePassword={(t) => changePassword(t)} />}

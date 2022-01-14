@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineDashboard } from "react-icons/ai";
 import { ImUsers } from "react-icons/im";
-import { FaChalkboardTeacher, FaBookReader, FaBookOpen, FaSwatchbook, FaChalkboard, FaBuromobelexperte } from "react-icons/fa";
+import { FaChalkboardTeacher, FaBookReader, FaBookOpen, FaSwatchbook, FaChalkboard, FaBuromobelexperte, FaCalendar } from "react-icons/fa";
 
 const AdminNav = () => {
 
@@ -40,7 +40,9 @@ const AdminNav = () => {
                 <li className='nav-text'>
                     <Link to="/admin/sections" className='nav-link'><FaBuromobelexperte /> <span>SECTIONS</span></Link>
                 </li>
-                <hr />
+                <li className='nav-text'>
+                    <Link to="/admin/schoolyears" className='nav-link'><FaCalendar /> <span>SCHOOL YEARS</span></Link>
+                </li>
 
                 <li className='nav-text'>
                     <Link to="/user/accounts" className='nav-link'><ImUsers /> <span>USERS ACCOUNTS</span></Link>

@@ -17,8 +17,8 @@ const SubjectsList = ({ classes, handleEditClick, handleUpdateSubmit, handleDele
                             <td>{t.name}</td>
                             <td>{t.code}</td>
                             <td>{t.level}</td>
-                            <td> <a className='text-primary fa fa-edit' onClick={() => handleEditClick(t)} /></td>
-                            <td> <a className='text-danger fas fa-trash' onClick={() => handleDelete(t._id)} /></td>
+                            <td> <a className='text-primary fa fa-edit pointer' onClick={() => handleEditClick(t)} /></td>
+                            <td> <a className='text-danger fas fa-trash pointer' onClick={() => handleDelete(t._id)} /></td>
 
                         </tr>
                         <tr>

@@ -1,5 +1,5 @@
 const User = require('../models/user');
-
+const admin = require('../firebase');
 
 exports.create = async (req, res) => {
     try {
@@ -44,5 +44,33 @@ exports.remove = async (req, res) => {
         res.json(deleted);
     } catch (err) {
         res.status(400).send("class delete failed");
+    }
+};
+
+exports.resetPass = async (req, res) => {
+    try {
+
+        console.log("In Controller , reset password:", req.body);
+        const UserRecord = await admin.auth().getUserByEmail(req.body.email);
+        const uid = UserRecord.uid;
+        console.log(uid);
+
+        admin.auth().updateUser(uid, {
+
+            password: req.body.password,
+        })
+            .then(function (userRecord) {
+                // See the UserRecord reference doc for the contents of userRecord.
+                console.log("Successfully updated user", userRecord.toJSON());
+            })
+            .catch(function (error) {
+                console.log("Error updating user password:", error);
+            });
+
+
+
+    }
+    catch (err) {
+        res.status(400).send("reset password failed");
     }
 };

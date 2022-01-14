@@ -13,6 +13,7 @@ import ClassesCreate from './pages/admin/ClassesCreate';
 import SubCoursesCreate from './pages/admin/SubCoursesCreate';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UsersCreate from './pages/admin/UsersCreate';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {

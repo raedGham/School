@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
-import { createUser, getUsers, updateUser, removeUser } from '../../functions/user';
+import { createUser, getUsers, updateUser, removeUser, resetPass } from '../../functions/user';
 import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword, updatePassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import UsersList from '../../components/forms/Users/UsersList';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { ImUsers } from "react-icons/im";
 import UserCreateForm from '../../components/forms/Users/UserCreateForm';
 import UserUpdateForm from "../../components/forms/Users/UserUpdateForm";
-
+import CPModal from '../../components/modal/changePasswordModal';
 
 
 
@@ -27,11 +27,22 @@ const UsersCreate = () => {
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
-
-
+    // Modal variables
+    const [Modal, setModal] = useState(false);
+    const [ModalUser, setModalUser] = useState({});
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // validation
+        if (!values.email || !password) {
+            toast.error("Email and password is required");
+            return;
+        }
+
+        if (password.length < 6) {
+            toast.error("Password must be at least 6 characters long");
+            return;
+        }
         console.log("User un handle submit", user);
         createUser(values, user.token)
             .then(res => {
@@ -42,7 +53,7 @@ const UsersCreate = () => {
                     console.log(auth);
                     createUserWithEmailAndPassword(auth, values.email, password)
                         .then((cred) => toast.success("Account ready for use..."))
-                        .catch((err) =>console.log(err));
+                        .catch((err) => console.log(err));
                     return
                 }, 500);
             })
@@ -54,17 +65,6 @@ const UsersCreate = () => {
 
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
-    // validation
-    if (!values.email || !password) {
-        toast.error("Email and password is required");
-        return;
-      }
-  
-      if (password.length < 6) {
-        toast.error("Password must be at least 6 characters long");
-        return;
-      }
-
         updateUser(values, user.token)
             .then(res => {
                 console.log("UPDATED")
@@ -84,21 +84,21 @@ const UsersCreate = () => {
     const handleChange = (e) => {
         console.log("HANDLE CHANGE");
         console.log(e.target.value);
- 
+
         setValues({ ...values, [e.target.name]: e.target.value })
     }
 
     const handleRadioChange = (e) => {
         console.log("HANDLE RADIO CHANGE");
         console.log(e.target.value);
- 
+
         setValues({ ...values, role: e.target.value })
     }
 
     const handlePasswordChange = (e) => {
         console.log("HANDLE Password CHANGE");
         console.log(e.target.value);
- 
+
         setPassword(e.target.value)
     }
 
@@ -142,6 +142,33 @@ const UsersCreate = () => {
                 })
         }
     }
+
+    const changePassword = (t) => {
+
+        //  alert(t.email);
+        setModalUser(t);
+        setModal(true);
+
+
+    }
+
+    const hideModel = () => {
+        setModal(false);
+    }
+
+    const hideModelAndSave = () => {
+
+        console.log(password);
+        console.log(ModalUser);
+        //console.log(user.token);
+        resetPass(ModalUser.email, password)
+            .then((res) => {
+                toast.success("Password sucessfully changed")
+            })
+            .catch((err) => console.log(err))
+        setModal(false);
+    }
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -153,28 +180,38 @@ const UsersCreate = () => {
                         <span className='h4'> Users </span>
                     </>)}
 
-                    {<UsersList users={users} handleEditClick={(t) => handleEditClick(t)} handleDelete={(t) => handleDelete(t)} />}
+                    {<UsersList users={users}
+                        handleEditClick={(t) => handleEditClick(t)}
+                        handleDelete={(t) => handleDelete(t)}
+                        changePassword={(t) => changePassword(t)} />}
                 </div>
 
                 <div className="col-md-5 text-left m-2">
+
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addUser} hidden={showUpdate} >Add User</button>
-                        {show ? (<UserCreateForm 
-                                                values={values} 
-                                                password={password} 
-                                                setValues={setValues} 
-                                                handleChange={handleChange} 
-                                                handleSubmit={handleSubmit} 
-                                                handleRadioChange={handleRadioChange}
-                                                handlePasswordChange={ handlePasswordChange} 
-                                    />) : ""} 
-                        {showUpdate ? <UserUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""} 
+                        {show ? (<UserCreateForm
+                            values={values}
+                            password={password}
+                            setValues={setValues}
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+                            handleRadioChange={handleRadioChange}
+                            handlePasswordChange={handlePasswordChange}
+                        />) : ""}
+                        {showUpdate ? <UserUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
                     </>
 
                     )}
 
-
                 </div>
+
+                {Modal ? (<CPModal
+                    hideModel={hideModel}
+                    user={ModalUser}
+                    password={password}
+                    setPassword={setPassword}
+                    hideModelAndSave={hideModelAndSave} />) : ""}
 
 
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
-
-
+import { AiFillSetting } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 const YearsList = ({ years, handleEditClick, handleUpdateSubmit, handleDelete }) => {
     return (
         <div>
@@ -21,8 +21,9 @@ const YearsList = ({ years, handleEditClick, handleUpdateSubmit, handleDelete })
 
                             <td className='bold'>{t.name}</td>
                             <td >{t.description}</td>
-                            <td > <a className='text-primary fa fa-edit pointer vertalign' onClick={() => handleEditClick(t)} /></td>
-                            <td> <a className='text-danger fas fa-trash pointer vertalign' onClick={() => handleDelete(t._id)} /></td>
+                            <td > <a className='text-primary fa fa-edit pointer ' onClick={() => handleEditClick(t)} /></td>
+                            <td> <a className='text-danger fas fa-trash pointer ' onClick={() => handleDelete(t._id)} /></td>
+                            <Link to={`/admin/schoolyear/settings/${t._id}`}> <AiFillSetting className='iconsize mt-2' /> </Link>
                         </tr>
                         <tr>
 

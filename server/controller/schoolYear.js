@@ -48,4 +48,13 @@ exports.remove = async (req, res) => {
     }
 };
 
+exports.getyear = async (req, res) => {
+    try {
+        const schoolyear = await SchoolYear.findById(req.params.id).sort({ createdAt: -1 }).exec();
+        res.json(schoolyear);
+    } catch (err) {
+        res.status(400).send("SchoolYear failed");
+    }
+};
+
 

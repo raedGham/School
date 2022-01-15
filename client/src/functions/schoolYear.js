@@ -22,3 +22,7 @@ export const updateYear = async (year, authToken) => {
         .then((res) => console.log(res))
         .catch((err) => console.log("Error in funct", err));
 }
+
+export const getYear = async (id, authToken) => {
+    return await axios.post(`${process.env.REACT_APP_API}/yearsetting/${id}`, { headers: { authToken } })
+}

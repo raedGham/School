@@ -15,6 +15,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import UsersCreate from './pages/admin/UsersCreate';
 import YearsCreate from './pages/admin/SchoolYearCreate';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import SchoolYearSettings from './pages/admin/SchoolYearSettings';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/admin/classes" exact element={<ClassesCreate />} />
           <Route path="/admin/subs" exact element={<SubCoursesCreate />} />
           <Route path="/admin/schoolyears" exact element={<YearsCreate />} />
+          <Route path="/admin/schoolyear/settings/:id" exact element={<SchoolYearSettings />} />
           <Route path="/user/accounts" exact element={<UsersCreate />} />
 
         </Routes>

@@ -15,7 +15,7 @@ import Search from '../../components/search/search';
 const YearsCreate = () => {
     const initialState = {
         name: "",
-        Description: "",
+        description: "",
 
     }
     const [values, setValues] = useState(initialState);
@@ -93,7 +93,7 @@ const YearsCreate = () => {
 
     const handleEditClick = (t) => {
         setValues({ ...t });
-        console.log(values);
+
         if (show) setShow(false);
         if (!showUpdate) setShowUpdate(true);
     }
@@ -134,7 +134,7 @@ const YearsCreate = () => {
                         <span className='h4'> School Years </span>
                     </>)}
                     <Search textSearch={textSearch} handleSearchChange={handleSearchChange} />
-                    {<YearsList users={textSearch.length < 1 ? years : searchResults}
+                    {<YearsList years={textSearch.length < 1 ? years : searchResults}
                         handleEditClick={(t) => handleEditClick(t)}
                         handleDelete={(t) => handleDelete(t)}
                     />}
@@ -146,12 +146,13 @@ const YearsCreate = () => {
                         <button className='btn btn-primary ml-4' onClick={addYear} hidden={showUpdate} >Add School Year</button>
                         {show ? (<YearCreateForm
                             values={values}
-                            setValues={setValues}
                             handleChange={handleChange}
                             handleSubmit={handleSubmit}
 
                         />) : ""}
-                        {showUpdate ? <YearUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
+                        {showUpdate ? <YearUpdateForm values={values}
+                            handleChange={handleChange}
+                            handleUpdateSubmit={handleUpdateSubmit} /> : ""}
                     </>
 
                     )}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StudentUpdateForm = ({ values, handleChange, handleUpdateSubmit }) => {
+const YearUpdateForm = ({ values, handleChange, handleUpdateSubmit }) => {
     const { description, name } = values;
     return (
         <form onSubmit={handleUpdateSubmit}>
@@ -21,4 +21,4 @@ const StudentUpdateForm = ({ values, handleChange, handleUpdateSubmit }) => {
     );
 };
 
-export default StudentUpdateForm;
+export default YearUpdateForm;

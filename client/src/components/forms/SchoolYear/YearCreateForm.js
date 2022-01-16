@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StudentCreateForm = ({ values, handleChange, handleSubmit }) => {
+const YearCreateForm = ({ values, handleChange, handleSubmit }) => {
     const { name, description } = values;
     return (
         <form onSubmit={handleSubmit}>
@@ -20,4 +20,4 @@ const StudentCreateForm = ({ values, handleChange, handleSubmit }) => {
     );
 };
 
-export default StudentCreateForm;
+export default YearCreateForm;

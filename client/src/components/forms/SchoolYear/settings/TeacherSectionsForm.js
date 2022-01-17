@@ -1,62 +1,79 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import SectionsList from './sectionList';
 import CoursesList from './courseList';
 import ShowSelected from './ShowSelected';
 const TeacherSectionsForm = ({ courses, sections, coursesTaught, handleTeacherScetionsSubmit }) => {
- 
- const [showClassesList, setShowClassesList] = useState(false)
- const [showSelected, setShowSelected] = useState(false);
- const [section, setSection] = useState("");
- 
 
- const selectedCourses = [];
+    const [showClassesList, setShowClassesList] = useState(false)
+    const [showSelected, setShowSelected] = useState(false);
+    const [course, setCourse] = useState("");
 
- const handleSectionClick = (s) => {
-    
-        setSection(s);
+
+    const selectedSections = [];
+
+    const handleCourseClick = (s) => {
+        console.log(s);
+        setCourse(s);
         if (showClassesList) setShowClassesList(false);
-        setTimeout(() => setShowClassesList(true) , 10)
-        
-   }
- 
-   const handleInputChange = (e) => {
-       if ( e.target.checked ) {
-           selectedCourses.push(e.target.value);
-       } else {
-           let index = selectedCourses.indexOf(e.target.value);
-           selectedCourses.splice(index,1);
-       }
-       console.log(selectedCourses);
-       setShowSelected(true);
-      
+        setTimeout(() => setShowClassesList(true), 10)
 
-   }
-   const handleInputSubmit = () => {
-     
-       
-       selectedCourses.map((c) => {
-           
-           coursesTaught.push({section:section.name, course:c})
-       } )
+    }
 
-       console.log(coursesTaught);
-      
-   }
+    const handleInputChange = (e) => {
+        if (e.target.checked) {
+            selectedSections.push(e.target.value);
+        } else {
+            let index = selectedSections.indexOf(e.target.value);
+            selectedSections.splice(index, 1);
+        }
+        console.log(selectedSections);
+
+
+
+    }
+    const handleInputSubmit = () => {
+
+
+        selectedSections.map((s) => {
+
+            coursesTaught.push({ course: course.name, section: s })
+        })
+
+        console.log(coursesTaught);
+
+
+        if (showSelected) setShowSelected(false);
+        setTimeout(() => setShowSelected(true), 10)
+    }
+
+    const handleRemove = (i) => {
+        coursesTaught.splice(i, 1);
+        if (showSelected) setShowSelected(false);
+        setTimeout(() => setShowSelected(true), 10)
+
+    }
 
     return (
-        <div class = "row">
-           
+        <div class="row">
+
             <div className='col-md-3'>
-            <SectionsList sections={sections}  handleSectionClick ={(s) => handleSectionClick(s)}/>
+                <CoursesList courses={courses} handleCourseClick={(s) => handleCourseClick(s)} />
+
             </div>
             <div className='col-md-3'>
-            {showClassesList  && <CoursesList section= {section.name} courses={courses} handleInputChange={handleInputChange} handleInputSubmit={handleInputSubmit}/>}
+                {showClassesList && <SectionsList course={course} sections={sections} handleInputChange={(s) => handleInputChange(s)} handleInputSubmit={handleInputSubmit} />}
             </div>
-            <div className='col-md-3'>
-            {showSelected && <ShowSelected  coursesTaught={coursesTaught}/>}
+            <div className='col-md-4'>
+                {showSelected && <ShowSelected coursesTaught={coursesTaught} handleRemove={(i) => handleRemove(i)} />}
+
+                {showSelected && <button className='btn btn-primary w-100 mt-3 btn-sm'>Submit</button>}
+
             </div>
 
-        
+
+
+
+
 
         </div>
     );

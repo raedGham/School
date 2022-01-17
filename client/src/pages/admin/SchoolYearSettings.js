@@ -103,7 +103,7 @@ const SchoolYearSettings = () => {
                             {studentform && <p> classes sections List goes here </p>}
                         </div>
 
-                        <div className="col-md-7">
+                        <div className="col-md-9">
                             {teacherform && teacherSelected && (<>
                                 <h5> Teacher Name: <span className="text-danger">{teacher.name}</span> </h5>
                                 <TeacherSectionsForm

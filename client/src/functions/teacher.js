@@ -24,3 +24,13 @@ export const updateTeacher = async (teacher, authToken) => {
 }
 
 
+
+export const addOrUpdateCourses = async (YrTeacherCourses, authToken) => {
+    console.log("Functions: ",YrTeacherCourses )
+    return await axios.post(`${process.env.REACT_APP_API}/teacher/schoolyear/courses`, YrTeacherCourses, { headers: { authToken } })
+}
+
+export const getCoursesTaught = async (schoolyear, teacher) => {
+
+    return await axios.get(`${process.env.REACT_APP_API}/teacher/${teacher._id}/schoolyear/${schoolyear._id}/getcourses`)
+}

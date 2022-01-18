@@ -4,7 +4,7 @@ import AdminNav from '../../components/nav/AdminNav';
 import { useSelector } from 'react-redux';
 import { getYear } from '../../functions/schoolYear';
 import { AiFillSetting } from 'react-icons/ai';
-import { getTeachers } from '../../functions/teacher';
+import { getTeachers , addOrUpdateCourses, getCoursesTaught} from '../../functions/teacher';
 import { getSections } from '../../functions/section';
 import { getCourses } from '../../functions/course';
 import TList from '../../components/forms/SchoolYear/settings/TList';
@@ -21,11 +21,14 @@ const SchoolYearSettings = () => {
     const [teacher, setTeacher] = useState({})
     const [sections, setSections] = useState([]);
     const [courses, setCourses] = useState([]);
-    const [coursesTaught, SetCoursesTaught] = useState([]);
+    const [coursesTaught, setCoursesTaught] = useState([]);
 
     const [studentform, setStudentform] = useState(false);
 
     const { user } = useSelector(state => ({ ...state }));
+
+     const [showClassesList, setShowClassesList] = useState(false)
+     const [showSelected, setShowSelected] = useState(false);
 
     const loadTeachers = () => {
         getTeachers()
@@ -48,12 +51,19 @@ const SchoolYearSettings = () => {
             });
     }
 
+    const loadTeacherCourses = (t) => {
+        getCoursesTaught(schoolYear, t)
+            .then((c) => {
+                console.log(c.data);
+              const cr = (c.data  && c.data.coursesTaught )? c.data.coursesTaught : ""
+                setCoursesTaught(cr);
+                
+            });
+    }
+
     useEffect(() => {
         getYear(id, user.token)
-            .then((u) => {
-                setSchoolYear(u.data);
-            }
-            )
+            .then((u) => setSchoolYear(u.data))
 
     }, []);
 
@@ -64,11 +74,31 @@ const SchoolYearSettings = () => {
     const handleSelectTeacher = (t) => {
         setTeacher(t);
         setTeacherSelected(true);
+        loadTeacherCourses(t)
 
     }
 
     const handleTeacherScetionsSubmit = () => {
-        //
+        // console.log("schoolYear",schoolYear);
+        // console.log("teacher",teacher);
+        // console.log("coursesTaught",coursesTaught);
+  let ct = [];
+     coursesTaught.map((i) => {
+         ct.push({course:i.course._id, section: i.section._id })
+     })
+
+
+        const YrTeacherCourses = {
+            schoolyear: schoolYear._id,
+            teacher   : teacher._id,
+            coursesTaught: ct
+
+        }
+
+        console.log("YrTeacherCourses",YrTeacherCourses );
+        addOrUpdateCourses(YrTeacherCourses, user.token)
+          .then(console.log("courses added"));
+        
     }
     return (
         <div className="container-fluid">
@@ -107,10 +137,17 @@ const SchoolYearSettings = () => {
                             {teacherform && teacherSelected && (<>
                                 <h5> Teacher Name: <span className="text-danger">{teacher.name}</span> </h5>
                                 <TeacherSectionsForm
+                                    teacher={teacher}         
                                     sections={sections}
                                     courses={courses}
                                     coursesTaught={coursesTaught}
-                                    handleTeacherScetionsSubmit={handleTeacherScetionsSubmit} />
+                                    setCoursesTaught={setCoursesTaught}
+                                    handleTeacherScetionsSubmit={handleTeacherScetionsSubmit} 
+                                    showSelected={showSelected}
+                                    setShowSelected={setShowSelected}
+                                    showClassesList={showClassesList}
+                                    setShowClassesList={setShowClassesList}
+                                    />
                             </>)}
                             {studentform && <p> students list goes here </p>}
                         </div>

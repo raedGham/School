@@ -1,6 +1,6 @@
 
 const Teacher = require('../models/teacher');
-
+const YrTeacherCourses = require('../models/YrTeacherCourses');
 
 exports.create = async (req, res) => {
     try {
@@ -47,3 +47,32 @@ exports.remove = async (req, res) => {
         res.status(400).send("Teacher delete failed");
     }
 };
+
+exports.addOrUpdateCourses = async (req, res) => {
+   
+    const  yrteachercourses  = req.body;
+    console.log(yrteachercourses);
+    const result = await YrTeacherCourses.findOneAndUpdate({ schoolyear: yrteachercourses.schoolyear , teacher:yrteachercourses.teacher}, yrteachercourses, { new: true });
+
+    if (result) {
+        res.json(result)
+    } else {
+        const newTrCourses = await new YrTeacherCourses(yrteachercourses).save();
+        console.log("Yr Courses added", newTrCourses);
+        res.json(newTrCourses);
+    }
+
+}
+
+
+exports.getCourses = async (req, res) => {
+    try {
+        const {teacherId, schoolyearId} = req.params;
+     
+        const TearcherCourses = await YrTeacherCourses.findOne({schoolyear:schoolyearId, teacher:teacherId}).populate('coursesTaught.course').populate('coursesTaught.section').exec();
+        res.json(TearcherCourses);
+    } catch (err) {
+        res.status(400).send("Teachers Courses failed");
+    }
+};
+

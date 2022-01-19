@@ -27,12 +27,12 @@ const Main = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="#">Home</a>
+                            <Link to="\" className="nav-link"  >Home</Link>
                         </li>
 
                         {!user && (
                             <li className="nav-item" >
-                                <Link to="/login" > Login </Link>
+                                <Link to="/login" className="nav-link"> Login </Link>
                             </li>)}
 
                         {user && (

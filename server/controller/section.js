@@ -1,5 +1,5 @@
 const Section = require('../models/section');
-
+const YrStudentsSections = require('../models/YrStudentsSections');
 
 exports.create = async (req, res) => {
     try {
@@ -46,3 +46,33 @@ exports.remove = async (req, res) => {
         res.status(400).send("Section delete failed");
     }
 };
+
+exports.getStudents= async (req, res) => {
+    try {
+        const {sectionId, schoolyearId} = req.params;
+     
+        const SectionStudents = await YrStudentsSections.findOne({schoolyear:schoolyearId, section:sectionId})
+                   .populate({path: 'students', options: { sort: { 'name': -1 } } })                   
+                   .exec();
+        res.json(SectionStudents);
+    } catch (err) {
+        res.status(400).send("Section Students failed");
+    }
+};
+
+exports.addOrUpdateStudents = async (req, res) => {
+   
+    const  yrstudentssections  = req.body;
+    console.log("controller yrstudentssections: ",yrstudentssections);
+    const result = await YrStudentsSections.findOneAndUpdate({ schoolyear: yrstudentssections.schoolyear , section:yrstudentssections.section}, yrstudentssections, { new: true });
+
+    if (result) {
+        res.json(result)
+    } else {
+        const newTr = await new YrStudentsSections(yrstudentssections).save();
+        console.log("Yr Courses added", newTr);
+        res.json(newTr);
+    }
+
+}
+

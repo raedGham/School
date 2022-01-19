@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
 
 exports.list = async (req, res) => {
     try {
-        const StudentsList = await Student.find({}).sort({ createdAt: -1 }).exec();
+        const StudentsList = await Student.find({}).sort({ name: 1 }).exec();
         res.json(StudentsList);
     } catch (err) {
         res.status(400).send("Students List failed");

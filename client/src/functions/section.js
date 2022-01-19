@@ -23,3 +23,13 @@ export const updateSection = async (section, authToken) => {
         .catch((err) => console.log("Error in funct", err));
 }
 
+
+export const addOrUpdateSecStudents = async (YrStudentsSections, authToken) => {
+    console.log("Functions: ",YrStudentsSections )
+    return await axios.post(`${process.env.REACT_APP_API}/section/schoolyear/students`, YrStudentsSections, { headers: { authToken } })
+}
+
+export const getSectionStudents = async (schoolyear, section) => {
+
+    return await axios.get(`${process.env.REACT_APP_API}/section/${section._id}/schoolyear/${schoolyear._id}/getstudents`)
+}

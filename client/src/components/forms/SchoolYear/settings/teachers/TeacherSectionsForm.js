@@ -25,14 +25,15 @@ const TeacherSectionsForm = ({ teacher, courses, sections, coursesTaught, setCou
     }
 
     const handleInputChange = (e) => {
-        console.log("Value:",JSON.parse(e.target.value));
+      const   val = JSON.parse(e.target.value);
         if (e.target.checked) {
-            selectedSections.push(JSON.parse(e.target.value));
+            selectedSections.push(val);
         } else {
-            let index = selectedSections.indexOf(e.target.value._id);
+        
+            let index = selectedSections.map((e)=> e._id).indexOf(val._id);
             selectedSections.splice(index, 1);
         }
-        console.log(selectedSections);
+      //  console.log(selectedSections);
 
 
 

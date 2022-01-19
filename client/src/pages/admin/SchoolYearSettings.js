@@ -5,11 +5,14 @@ import { useSelector } from 'react-redux';
 import { getYear } from '../../functions/schoolYear';
 import { AiFillSetting } from 'react-icons/ai';
 import { getTeachers , addOrUpdateCourses, getCoursesTaught} from '../../functions/teacher';
-import { getSections } from '../../functions/section';
+import { getSections, getSectionStudents , addOrUpdateSecStudents} from '../../functions/section';
 import { getCourses } from '../../functions/course';
-import TList from '../../components/forms/SchoolYear/settings/TList';
-import TeacherSectionsForm from '../../components/forms/SchoolYear/settings/TeacherSectionsForm';
+import { getStudents } from '../../functions/student';
+import TList from '../../components/forms/SchoolYear/settings/teachers/TList';
+import TeacherSectionsForm from '../../components/forms/SchoolYear/settings/teachers/TeacherSectionsForm';
 
+import SList from '../../components/forms/SchoolYear/settings/students/SList';
+import SectionsStudentsForm from '../../components/forms/SchoolYear/settings/students/SectionsStudentsForm';
 
 const SchoolYearSettings = () => {
 
@@ -21,6 +24,7 @@ const SchoolYearSettings = () => {
     const [teacher, setTeacher] = useState({})
     const [sections, setSections] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [students, setStudents] = useState([]);
     const [coursesTaught, setCoursesTaught] = useState([]);
 
     const [studentform, setStudentform] = useState(false);
@@ -30,6 +34,10 @@ const SchoolYearSettings = () => {
      const [showClassesList, setShowClassesList] = useState(false)
      const [showSelected, setShowSelected] = useState(false);
 
+
+     const [section, setSection] = useState({});
+     const [sectionSelected, setSectionSelected] = useState(false);
+     const [sectionStudents, setSectionStudents] = useState([]);
     const loadTeachers = () => {
         getTeachers()
             .then((t) => {
@@ -61,6 +69,13 @@ const SchoolYearSettings = () => {
             });
     }
 
+    const loadStudents = () => {
+        getStudents()
+            .then((c) => {
+                setStudents(c.data);
+            });
+    }
+
     useEffect(() => {
         getYear(id, user.token)
             .then((u) => setSchoolYear(u.data))
@@ -70,6 +85,7 @@ const SchoolYearSettings = () => {
     useEffect(() => loadTeachers(), []);
     useEffect(() => loadSections(), []);
     useEffect(() => loadCourses(), []);
+    useEffect(() => loadStudents(), []);
 
     const handleSelectTeacher = (t) => {
         setTeacher(t);
@@ -100,6 +116,44 @@ const SchoolYearSettings = () => {
           .then(console.log("courses added"));
         
     }
+
+//   sections students part goes here
+
+const handleSelectSection = (s) => {
+    setSection(s);
+    setSectionSelected(true);
+    loadSectionStudents(s)
+}
+
+const loadSectionStudents = (s) => {
+    getSectionStudents(schoolYear, s)
+        .then((c) => {
+            console.log(c.data);
+          const cr = (c.data  && c.data.students )? c.data.students : ""
+            setSectionStudents(cr);
+            
+        });
+
+        console.log(sectionStudents)
+}
+
+
+const handleSectionStudentsSubmit = (s) => {
+
+        const YrStudentsSections = {
+           schoolyear: schoolYear._id,
+           section   : section._id,
+           students   :sectionStudents
+
+       }
+
+       console.log("YrStudentsSections",YrStudentsSections );
+       addOrUpdateSecStudents(YrStudentsSections, user.token)
+         .then(console.log("section students added"));
+       
+
+}
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -107,7 +161,7 @@ const SchoolYearSettings = () => {
 
                 <div className="col-md-10 text-left">
 
-                    <h5> <AiFillSetting /> School Year  {schoolYear.name}  Settings</h5>
+                    <h5> <AiFillSetting /> School Year:<span className='text-danger bold'>{schoolYear.name} </span>  Settings</h5>
 
 
                     <button className='btn btn-primary btn-sm'
@@ -130,7 +184,7 @@ const SchoolYearSettings = () => {
                     <div className="row">
                         <div className="col-md-3">
                             {teacherform && <TList teachers={teachers} handleSelectTeacher={(t) => handleSelectTeacher(t)} />}
-                            {studentform && <p> classes sections List goes here </p>}
+                            {studentform && <SList sections={sections} handleSelectSection={(s) => handleSelectSection(s)} />}
                         </div>
 
                         <div className="col-md-9">
@@ -149,10 +203,18 @@ const SchoolYearSettings = () => {
                                     setShowClassesList={setShowClassesList}
                                     />
                             </>)}
-                            {studentform && <p> students list goes here </p>}
-                        </div>
+                            {studentform && sectionSelected && <SectionsStudentsForm
+                                              section ={section}
+                                              students={students}
+                                              sectionStudents ={sectionStudents}
+                                              setSectionStudents ={setSectionStudents}
+                                              handleSectionStudentsSubmit={handleSectionStudentsSubmit}
+                                             
+                                             /> }
+                        </div> 
                     </div>
                 </div>
+
 
 
 

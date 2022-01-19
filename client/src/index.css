@@ -175,3 +175,10 @@ span {
   color: rgb(6, 105, 187)
 }
 
+.scroll {
+ 
+    max-height: 700px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}

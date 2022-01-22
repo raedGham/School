@@ -26,3 +26,8 @@ export const updateYear = async (year, authToken) => {
 export const getYear = async (id, authToken) => {
     return await axios.post(`${process.env.REACT_APP_API}/yearsetting/${id}`, { headers: { authToken } })
 }
+
+export const getDefYr = async () => {
+    return await axios.get(`${process.env.REACT_APP_API}/year/default`)
+
+}

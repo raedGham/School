@@ -4,13 +4,13 @@ const YrTeacherCourses = require('../models/YrTeacherCourses');
 
 exports.create = async (req, res) => {
     try {
-        const  teacherdata  = req.body;
-     //   console.log("teacherdata", teacherdata);
+        const teacherdata = req.body;
+        //   console.log("teacherdata", teacherdata);
         const teacher = await new Teacher(teacherdata).save();
- //       console.log(teacher);
+        //       console.log(teacher);
         res.json(teacher);
     } catch (err) {
- //               console.log(err);
+        //               console.log(err);
         res.status(400).send("Create Teacher failed");
     }
 };
@@ -28,10 +28,10 @@ exports.list = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const id =  req.body._id;
+        const id = req.body._id;
         console.log(id);
         console.log(req.params.id);
-        let updated = await Teacher.findByIdAndUpdate( req.params.id , req.body, { new: true }).exec();        
+        let updated = await Teacher.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec();
         res.json(updated);
     } catch (err) {
         res.status(400).send("Teacher update failed");
@@ -41,7 +41,7 @@ exports.update = async (req, res) => {
 
 exports.remove = async (req, res) => {
     try {
-        const deleted = await Teacher.findByIdAndDelete(req.params.id ).exec();
+        const deleted = await Teacher.findByIdAndDelete(req.params.id).exec();
         res.json(deleted);
     } catch (err) {
         res.status(400).send("Teacher delete failed");
@@ -49,10 +49,10 @@ exports.remove = async (req, res) => {
 };
 
 exports.addOrUpdateCourses = async (req, res) => {
-   
-    const  yrteachercourses  = req.body;
+
+    const yrteachercourses = req.body;
     console.log(yrteachercourses);
-    const result = await YrTeacherCourses.findOneAndUpdate({ schoolyear: yrteachercourses.schoolyear , teacher:yrteachercourses.teacher}, yrteachercourses, { new: true });
+    const result = await YrTeacherCourses.findOneAndUpdate({ schoolyear: yrteachercourses.schoolyear, teacher: yrteachercourses.teacher }, yrteachercourses, { new: true });
 
     if (result) {
         res.json(result)
@@ -67,12 +67,21 @@ exports.addOrUpdateCourses = async (req, res) => {
 
 exports.getCourses = async (req, res) => {
     try {
-        const {teacherId, schoolyearId} = req.params;
-     
-        const TearcherCourses = await YrTeacherCourses.findOne({schoolyear:schoolyearId, teacher:teacherId}).populate('coursesTaught.course').populate('coursesTaught.section').exec();
+        const { teacherId, schoolyearId } = req.params;
+
+        const TearcherCourses = await YrTeacherCourses.findOne({ schoolyear: schoolyearId, teacher: teacherId }).populate('coursesTaught.course').populate('coursesTaught.section').exec();
         res.json(TearcherCourses);
     } catch (err) {
         res.status(400).send("Teachers Courses failed");
     }
 };
 
+exports.getbyemail = async (req, res) => {
+    try {
+
+        const teach = await Teacher.find({ email: req.params.email }).exec();
+        res.json(teach);
+    } catch (err) {
+        res.status(400).send("Teacher by email failed");
+    }
+};

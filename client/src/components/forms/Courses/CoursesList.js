@@ -6,8 +6,9 @@ const SubjectsList = ({ courses, handleEditClick, handleUpdateSubmit, handleDele
             <table className='table table-outline' onSubmit={handleUpdateSubmit}>
                 <thead className='thead'>
                     <tr>
-                        <th scope="col">Subject Name</th>
+                        <th scope="col">Course Name</th>
                         <th scope="col">Code</th>
+                        <th scope="col">GradeOn</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -16,6 +17,7 @@ const SubjectsList = ({ courses, handleEditClick, handleUpdateSubmit, handleDele
                         <tr key={t._id}>
                             <td>{t.name}</td>
                             <td>{t.code}</td>
+                            <td>{t.gradeOn}</td>
                             <td> <a className='text-primary fa fa-edit pointer' onClick={() => handleEditClick(t)} /></td>
                             <td> <a className='text-danger fas fa-trash pointer' onClick={() => handleDelete(t._id)} /></td>
                         </tr>

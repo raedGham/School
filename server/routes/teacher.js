@@ -7,7 +7,7 @@ const router = express.Router();
 const { authCheck, adminCheck } = require("../middleware/auth");
 
 // controller
-const { create , list , update, remove, addOrUpdateCourses,getCourses} = require('../controller/teacher');
+const { create, list, update, remove, addOrUpdateCourses, getCourses, getbyemail } = require('../controller/teacher');
 
 // Routes
 router.post("/teacher", authCheck, adminCheck, create);          // route to create a teacher 
@@ -16,4 +16,5 @@ router.put("/teacher/:id", authCheck, adminCheck, update);          // route to 
 router.delete("/teacher/:id", authCheck, adminCheck, remove);          // route to delete teacher
 router.post("/teacher/schoolyear/courses", authCheck, adminCheck, addOrUpdateCourses)
 router.get("/teacher/:teacherId/schoolyear/:schoolyearId/getcourses", getCourses)
+router.get("/teacher/:email", getbyemail);          // route to get a teacher by email 
 module.exports = router;

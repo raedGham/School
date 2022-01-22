@@ -7,7 +7,7 @@ const CoursesList = ({ courses, handleCourseClick }) => {
         <ul className='list-group'>
 
             {courses.map((c, i) => (
-                <a className='list-group-item' key={c._id} onClick={() => handleCourseClick(c)} > {c.name}</a>
+                <a className='list-group-item' key={c._id} onClick={() => handleCourseClick(c)} > <span className='text-primary'> {c.code} </span> / {c.name}</a>
             ))}
         </ul>
 

@@ -6,7 +6,7 @@ const ShowSelected = ({ coursesTaught, handleRemove }) => {
           <div className='list-group'>
 
                {coursesTaught.map((s, i) => (<>
-                    <li className='list-group-item' key={i} > {s.course.name} / {s.section.name}
+                    <li className='list-group-item' key={i} > <span className='text-primary'>{s.course.code}</span> / {s.course.name}  | {s.section.name}
                          <TiDelete className='text-danger pointer' onClick={() => handleRemove(i)} /> </li>
                </>
                ))}

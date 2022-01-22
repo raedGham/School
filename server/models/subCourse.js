@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 
 
 const subSchema = new mongoose.Schema({
-    name: { type: String, required: true, index: true },    
-    code : String,   
-    gradeOn: Number,
+    name: { type: String, required: true, index: true },
+    code: String,
+    gradeOn: { type: Number, required: true, min: 0, max: 100 }
 }, { timestamps: true });
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const SectionsList = ({ course, sections, handleInputChange, handleInputSubmit }) => {
     return (<>
-        <h6>{course.name}</h6>
+        <h6><span className='text-primary'>{course.code}</span> / {course.name}</h6>
         <div className='list-group'>
 
             {sections.map((s) => (

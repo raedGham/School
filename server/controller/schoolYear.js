@@ -58,3 +58,11 @@ exports.getyear = async (req, res) => {
 };
 
 
+exports.getDefault = async (req, res) => {
+    try {
+        const schoolyear = await SchoolYear.find({ defaultYear: true }).exec();
+        res.json(schoolyear);
+    } catch (err) {
+        res.status(400).send("Default SchoolYears failed");
+    }
+};

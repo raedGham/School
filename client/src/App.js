@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Home from './pages/Home';
+import Home from './pages/teacher/Home';
 import Main from './components/nav/main';
 import Login from './pages/auth/Login';
 import TeachersCreate from './pages/admin/TeachersCreate';
@@ -38,6 +38,7 @@ function App() {
           <Route path="/admin/schoolyears" exact element={<YearsCreate />} />
           <Route path="/admin/schoolyear/settings/:id" exact element={<SchoolYearSettings />} />
           <Route path="/user/accounts" exact element={<UsersCreate />} />
+          <Route path="/user/dashboard" exact element={<Home />} />
 
         </Routes>
       </BrowserRouter>

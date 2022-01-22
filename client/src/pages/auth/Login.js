@@ -11,28 +11,28 @@ import { createOrUpdateUser } from '../../functions/auth';
 
 const Login = () => {
 
-    const [email, setEmail] = useState("ghumrawi.raed@gmail.com");
+    const [email, setEmail] = useState("raed_ghamrawi@live.com");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => (state));
     const navigate = useNavigate();
     const location = useLocation();
-    let  dispatch = useDispatch();
+    let dispatch = useDispatch();
     const roleBasedRedirect = (res) => {
 
-        console.log("location state from in login ", location.state.from);
+        //  console.log("location state from in login ", location.state.from);
 
-        let intended = location.state;
-        if (intended) {
-            navigate(intended.from)
+        // let intended = location.state;
+        // if (intended) {
+        //     navigate(intended.from)
+        // } else {
+        if (res.data.role === "admin") {
+            navigate("/admin/dashboard");
         } else {
-            if (res.data.role === "admin") {
-                navigate("/admin/dashboard");
-            } else {
-                navigate("/home");
-            }
+            navigate("/home");
         }
     }
+
     useEffect(() => {
         // console.log("Login:", user);
         if (user && user.token) {
@@ -42,9 +42,9 @@ const Login = () => {
 
 
 
-  
+
     const provider = new GoogleAuthProvider();
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -138,7 +138,7 @@ const Login = () => {
 
             <button
                 type="button"
-                className="mt-3 btn btn-primary w-100"                                 
+                className="mt-3 btn btn-primary w-100"
                 disabled={!email || password.length < 6}
                 onClick={handleSubmit} > <i className='far fa-envelope' />  Log In with Email / Password
             </button>

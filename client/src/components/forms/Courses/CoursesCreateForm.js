@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SubjectsCreateForm = ({ values, setValues, handleChange, handleSubmit, subs, handleSubChange }) => {
-    const { name, code } = values;
+    const { name, code, gradeOn } = values;
     return (
         <form onSubmit={handleSubmit}>
 
@@ -14,6 +14,12 @@ const SubjectsCreateForm = ({ values, setValues, handleChange, handleSubmit, sub
                 <label className='text-primary'>Code</label>
                 <input type="text" name="code" className='form-control form-control-sm' value={code} onChange={handleChange} />
             </div>
+
+            <div className='form-group m-2'>
+                <label className='text-primary'>Grade On</label>
+                <input type="text" name="gradeOn" className='form-control form-control-sm' value={gradeOn} onChange={handleChange} />
+            </div>
+
             <div className='form-group m-2'>
                 <label className='text-primary'>Class Sections</label>
                 <select name="subs" className='form-control' onChange={handleSubChange} multiple>
@@ -22,7 +28,7 @@ const SubjectsCreateForm = ({ values, setValues, handleChange, handleSubmit, sub
                     )}
 
                 </select>
-             </div>   
+            </div>
             <br />
             <button type="submit" className='btn btn-outline-primary'> Save</button>
         </form>

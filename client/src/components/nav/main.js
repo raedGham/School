@@ -26,9 +26,9 @@ const Main = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <Link to="\" className="nav-link"  >Home</Link>
-                        </li>
+                        {user && user.role === "teacher" && <li className="nav-item">
+                            <Link to="/user/dashboard" className="nav-link"  >Home</Link>
+                        </li>}
 
                         {!user && (
                             <li className="nav-item" >
@@ -42,7 +42,7 @@ const Main = () => {
                                 </a>
 
                                 <ul className="dropdown-menu " aria-labelledby="navbarDropdown">
-                                    {user && user.role === "teacher" && <li><Link to="/user/history">User Dashboard </Link></li>}
+                                    {user && user.role === "teacher" && <li><Link to="/user/dashboard">User Dashboard </Link></li>}
                                     {user && user.role === "admin" && <li><Link to="/admin/dashboard">Admin Dashboard </Link></li>}
                                     <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
                                 </ul>

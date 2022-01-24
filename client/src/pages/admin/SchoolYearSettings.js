@@ -60,9 +60,10 @@ const SchoolYearSettings = () => {
     }
 
     const loadTeacherCourses = (t) => {
-        getCoursesTaught(schoolYear, t)
+       console.log("LOAD teacher courses", schoolYear._id, t._id);
+        getCoursesTaught( t._id, schoolYear._id)
             .then((c) => {
-                console.log(c.data);
+                console.log("Teacher Courses:", c.data);
               const cr = (c.data  && c.data.coursesTaught )? c.data.coursesTaught : ""
                 setCoursesTaught(cr);
                 

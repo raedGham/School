@@ -40,7 +40,9 @@ const Home = () => {
     useEffect(() => loadTeacher(), []);
     useEffect(() => loadCourses(teacher._id, defYr), [teacher]);
 
-
+const handleCourseClick = (c) => {
+    console.log("clicked", c);
+}
 
 
     return (
@@ -48,7 +50,7 @@ const Home = () => {
         <div className='row'>
             <div className='col-md-5'>
                 <TeacherCard teacher={teacher} />
-                <TeacherCourses teacherCourses={teacherCourses} />
+              {teacherCourses.coursesTaught && <TeacherCourses coursesTaught={teacherCourses.coursesTaught} handleCourseClick={(c) => handleCourseClick(c)} />}
             </div>
         </div>
     );

@@ -68,9 +68,12 @@ exports.addOrUpdateCourses = async (req, res) => {
 exports.getCourses = async (req, res) => {
     try {
         const { teacherId, schoolyearId } = req.params;
-
-        const TearcherCourses = await YrTeacherCourses.findOne({ schoolyear: schoolyearId, teacher: teacherId }).populate('coursesTaught.course').populate('coursesTaught.section').exec();
-        res.json(TearcherCourses);
+        console.log("teacher Id", teacherId)
+        console.log("schoolyear Id", schoolyearId)
+        const TeacherCourses = await YrTeacherCourses.findOne({ schoolyear: schoolyearId, teacher: teacherId }).populate('coursesTaught.course').populate('coursesTaught.section').exec();
+        console.log("TeacherCourses", TeacherCourses)
+        res.json(TeacherCourses);
+        
     } catch (err) {
         res.status(400).send("Teachers Courses failed");
     }

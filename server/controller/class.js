@@ -3,11 +3,9 @@ const Class = require('../models/class');
 
 exports.create = async (req, res) => {
     try {
-        const subdata = req.body;
-        console.log("Classdata===>", req.body);
-        const user = await new Class(req.body).save();
+      const classs = await new Class(req.body).save();
         //       console.log(classs);
-        res.json(user);
+        res.json(classs);
     } catch (err) {
         //               console.log(err);
         res.status(400).send("Create class failed");

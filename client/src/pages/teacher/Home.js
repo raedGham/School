@@ -60,7 +60,8 @@ const handleCourseClick = (c) => {
               
             </div>
             <div className='col-md-7'>
-            {grades && <SectionGrades grades={grades} />}
+                {/* {JSON.stringify(grades)} */}
+            { grades.students ? (<SectionGrades grades={grades} />):""}
             </div>  
         </div>
     );

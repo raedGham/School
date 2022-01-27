@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const TeachersList = ({ students, handleEditClick, handleUpdateSubmit, handleDelete }) => {
+const StudentsList = ({ students, handleEditClick, handleUpdateSubmit, handleDelete }) => {
     return (
         <div>
 
@@ -37,4 +37,4 @@ const TeachersList = ({ students, handleEditClick, handleUpdateSubmit, handleDel
     );
 };
 
-export default TeachersList;
+export default StudentsList;

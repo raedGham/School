@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SubjectsList = ({ courses, handleEditClick, handleUpdateSubmit, handleDelete }) => {
+const CoursesList = ({ courses, handleEditClick, handleUpdateSubmit, handleDelete }) => {
     return (
         <div>
             <table className='table table-outline' onSubmit={handleUpdateSubmit}>
@@ -34,4 +34,4 @@ const SubjectsList = ({ courses, handleEditClick, handleUpdateSubmit, handleDele
     );
 };
 
-export default SubjectsList;
+export default CoursesList;

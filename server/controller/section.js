@@ -3,11 +3,10 @@ const YrStudentsSections = require('../models/YrStudentsSections');
 
 exports.create = async (req, res) => {
     try {
-        const  subdata  = req.body;
+        const  secdata  = req.body;
      //   console.log("subdata", subdata);
-        const sub = await new Section(subdata).save();
- //       console.log(sub);
-        res.json(sub);
+        const section = await new Section(secdata).save();
+        res.json(section);
     } catch (err) {
  //               console.log(err);
         res.status(400).send("Create section failed");

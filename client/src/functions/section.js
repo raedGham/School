@@ -16,8 +16,8 @@ export const removeSection = async (id, authToken) => {
 }
 
 export const updateSection = async (section, authToken) => {
-    console.log("section:", section);
-    console.log(authToken);
+    // console.log("section:", section);
+    // console.log(authToken);
     return await axios.put(`${process.env.REACT_APP_API}/section/${section._id}`, section, { headers: { authToken } })
         .then((res) => console.log(res))
         .catch((err) => console.log("Error in funct", err));

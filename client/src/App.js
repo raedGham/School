@@ -16,7 +16,7 @@ import UsersCreate from './pages/admin/UsersCreate';
 import YearsCreate from './pages/admin/SchoolYearCreate';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import SchoolYearSettings from './pages/admin/SchoolYearSettings';
-
+import StorageComp from './storage';
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Main />
         <ToastContainer />
         <Routes>
-        
+        <Route path="/storage" exact element={<StorageComp />} />        
           <Route path="/login" exact element={<Login />} />
           <Route path="/admin/dashboard" exact element={<AdminDashboard />} />
           <Route path="/admin/teachers" exact element={<TeachersCreate />} />

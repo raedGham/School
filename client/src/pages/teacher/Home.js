@@ -14,10 +14,12 @@ const Home = () => {
     const [teacher, setTeacher] = useState({});
     const [teacherCourses, setTeacherCourses] = useState([]);
     const [grades, setGrades] = useState([]);
-
+    const [currentCourse, setCurrentCourse] = useState({});
+    const [currentSection, setCurrentSection] = useState({});
+    let gradesTemp = [];
     const loadDefYr = () => {
         getDefYr().then((res) => {
-            console.log(res.data[0]._id)
+
             setDefYr(res.data[0]._id);
             setDefYr1(res.data[0]);
 
@@ -44,25 +46,52 @@ const Home = () => {
     useEffect(() => loadTeacher(), []);
     useEffect(() => loadCourses(teacher._id, defYr), [teacher]);
 
-const handleCourseClick = (c) => {
-    console.log("clicked", c);
-    console.log("defYr", defYr)
-    getSectionStudents(defYr1, c.section).then((res)=>setGrades(res.data))
-}
+    const handleCourseClick = (c) => {
+        gradesTemp = [];
+        console.log("clicked", c);
+        setCurrentCourse(c.course);
+        setCurrentSection(c.section);
+        // console.log("defYr", defYr)
+        getSectionStudents(defYr1, c.section).then((res) => {
+            console.log(res.data);
+            console.log(gradesTemp);
+            const temp = res.data.students;
+            temp.map((s) => gradesTemp.push({
+                studentName: s.name,
+                student: s._id,
+                course: c.course._id,
+                schoolyear: defYr,
+                section: c.section._id,
+                grade1: 0,
+                grade2: 0,
+                grade3: 0,
+                grade4: 0,
+                teacher: teacher._id
+            }));
+            console.log(gradesTemp);
+            setGrades(gradesTemp)
+        })
 
+    }
+    const handleChange = (e) => {
+        console.log("name:", [e.target.name]);
+        console.log("value:", parseInt(e.target.value));
+
+        // setGrades({ ...grades, [e.target.name]: parseInt(e.target.value) })
+    }
 
     return (
 
         <div className='row'>
             <div className='col-md-4'>
                 <TeacherCard teacher={teacher} />
-              {teacherCourses.coursesTaught && <TeacherCourses coursesTaught={teacherCourses.coursesTaught} handleCourseClick={(c) => handleCourseClick(c)} />}
-              
+                {teacherCourses.coursesTaught && <TeacherCourses coursesTaught={teacherCourses.coursesTaught} handleCourseClick={(c) => handleCourseClick(c)} />}
+
             </div>
             <div className='col-md-7'>
-                {/* {JSON.stringify(grades)} */}
-            { grades.students ? (<SectionGrades grades={grades} />):""}
-            </div>  
+
+                <SectionGrades grades={grades} schoolyear={defYr1.description} course={currentCourse.name} section={currentSection.name} handleChange={handleChange} />
+            </div>
         </div>
     );
 };

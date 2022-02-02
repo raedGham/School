@@ -24,7 +24,8 @@ const TeachersCreate = () => {
 
     }
     const [values, setValues] = useState(initialState);
-
+    const [errors, setErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
     const { user } = useSelector(state => ({ ...state }));
     const [teachers, setTeachers] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
@@ -33,11 +34,27 @@ const TeachersCreate = () => {
     const [show, setShow] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
 
+   const validate = (values) => {
+     const err = {};
+     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+     if (!values.name) {
+         err.name = "Teacher name is required!";
+     }
+     if (!values.email) {
+        err.email = "Teacher Email is required!"}
+     else if (!regex.test(values.email))   {
+     err.email = "This is not a valid Email!";
+    }
 
+    return err;
+   }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("User", user);
+       
+        setErrors(validate(values));
+        setIsSubmit(true);
+        
         createTeacher(values, user.token)
             .then(res => {
                 toast.success(`${res.data.name} created Sucessfully`)
@@ -79,6 +96,12 @@ const TeachersCreate = () => {
 
     useEffect(() => loadTeachers(), []);
 
+    useEffect(() => {
+        console.log("Errors:", errors);
+        if (Object.keys(errors).length ===0 && isSubmit) {
+            console.log(values);
+        }
+    }, [errors]);
     const loadTeachers = () => {
         if (show) setShow(false);
         if (showUpdate) setShowUpdate(false);
@@ -172,7 +195,7 @@ const TeachersCreate = () => {
                 <div className="col-md-5 text-left m-2">
                     {loading ? <h4 className='text-danger'>Loading...</h4> : (<>
                         <button className='btn btn-primary ml-4' onClick={addTeacher} hidden={showUpdate} >Add Teacher</button>
-                        {show ? (<TeacherCreateForm values={values} setValues={setValues} handleChange={handleChange} handleSubmit={handleSubmit} />) : ""}
+                        {show ? (<TeacherCreateForm values={values} errors={errors} handleChange={handleChange} handleSubmit={handleSubmit} />) : ""}
                         {showUpdate ? <TeacherUpdateForm values={values} setValues={setValues} handleChange={handleChange} handleUpdateSubmit={handleUpdateSubmit} /> : ""}
                     </>
 

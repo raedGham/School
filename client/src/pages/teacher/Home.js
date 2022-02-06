@@ -18,12 +18,15 @@ const Home = () => {
     const [currentSection, setCurrentSection] = useState({});
     let gradesTemp = [];
     const loadDefYr = () => {
-        getDefYr().then((res) => {
+        setTimeout(() => {
+            getDefYr().then((res) => {
 
-            setDefYr(res.data[0]._id);
-            setDefYr1(res.data[0]);
+                setDefYr(res.data[0]._id);
+                setDefYr1(res.data[0]);
 
-        })
+            })
+        }, 1000);
+
     }
 
     const loadTeacher = () => {
@@ -42,7 +45,7 @@ const Home = () => {
 
         }))
     }
-    useEffect(() => loadDefYr(), []);
+    useEffect(() => loadDefYr(), [defYr]);
     useEffect(() => loadTeacher(), []);
     useEffect(() => loadCourses(teacher._id, defYr), [teacher]);
 
@@ -73,12 +76,7 @@ const Home = () => {
         })
 
     }
-    const handleChange = (e) => {
-        console.log("name:", [e.target.name]);
-        console.log("value:", parseInt(e.target.value));
 
-        // setGrades({ ...grades, [e.target.name]: parseInt(e.target.value) })
-    }
 
     return (
 
@@ -90,7 +88,7 @@ const Home = () => {
             </div>
             <div className='col-md-7'>
 
-                <SectionGrades grades={grades} schoolyear={defYr1.description} course={currentCourse.name} section={currentSection.name} handleChange={handleChange} />
+                <SectionGrades grades={grades} schoolyear={defYr1.description} course={currentCourse.name} section={currentSection.name} />
             </div>
         </div>
     );

@@ -1,48 +1,33 @@
 import React from 'react';
 
-const SectionGrades = ({ grades, schoolyear, course, section, handleChange }) => {
+const SectionGrades = ({ s, index }, grades, setGrades) => {
 
-
-
+    const handleChange = (e) => {
+        console.log(e.target.value);
+        console.log(e.target.name);
+        console.log(index)
+        let gradesTemp = grades;
+        console.log(gradesTemp);
+        gradesTemp.map((item, ind) => {
+            if (ind = index) {
+                item.e.target.name = e.target.value;
+            }
+        })
+        setGrades(gradesTemp)
+    }
     return (
 
-        <div>
-            <h4>Schoolyear: <span className='text-primary'>{schoolyear} </span></h4>
-            <h5>course:<span className='text-danger'>{course} </span>  section:<span className='text-danger'>{section}</span> </h5>
-            <table className='table'>
+        <tr key={index}>
+            {JSON.stringify(grades)}
+            <td className='text-primary'>{s.studentName}</td>
+            <td>  <input type="number" className='form-control' name="grade1" placeholder="Greade 1" value={s.grade1} onChange={handleChange} /> </td>
+            <td>  <input type="number" className='form-control' name="grade2" placeholder="Greade 2" value={s.grade2} /></td>
+            <td> <input type="number" className='form-control' name="grade3" placeholder="Greade 3" value={s.grade3} /> </td>
+            <td> <input type="number" className='form-control' name="grade4" placeholder="Greade 4" value={s.grade4} /> </td>
+        </tr>
 
-                <thead>
-                    <tr>
-                        <th scope="col">Student</th>
-                        <th scope="col">Term1</th>
-                        <th scope="col">Term2</th>
-                        <th scope="col">Term3</th>
-                        <th scope="col">Term4</th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    {grades.map((s) => {
-                        return (<>
-
-                            <tr >
-                                <td className='text-primary'>{s.studentName}</td>
-                                <td>  <input type="number" className='form-control' name="grade1" placeholder="Greade 1" value={s.grade1} onChange={(s) => handleChange(s)} /> </td>
-                                <td>  <input type="number" className='form-control' name="grade2" placeholder="Greade 2" value={s.grade2} onChange={(s) => handleChange(s)} /></td>
-                                <td> <input type="number" className='form-control' name="grade3" placeholder="Greade 3" value={s.grade3} onChange={(s) => handleChange(s)} /> </td>
-                                <td> <input type="number" className='form-control' name="grade4" placeholder="Greade 4" value={s.grade4} onChange={(s) => handleChange(s)} /> </td>
-                            </tr>
-
-                        </>
-                        )
-                    }
-                    )}
-                </tbody>
-
-            </table>
-
-        </div>
-    );
-};
+    )
+}
 
 export default SectionGrades;

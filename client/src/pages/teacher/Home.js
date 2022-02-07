@@ -18,15 +18,15 @@ const Home = () => {
     const [currentSection, setCurrentSection] = useState({});
     let gradesTemp = [];
     const loadDefYr = () => {
-       
-            getDefYr().then((res) => {
 
-                setDefYr(res.data[0]._id);
-               setDefYr1(res.data[0]);
+        getDefYr().then((res) => {
 
-                 console.log("defYr--->", defYr);
+            setDefYr(res.data[0]._id);
+            setDefYr1(res.data[0]);
 
-            })
+            console.log("defYr--->", defYr);
+
+        })
 
 
     }
@@ -39,16 +39,16 @@ const Home = () => {
     }
 
     const loadCourses = (teacherId, defYrId) => {
-   
-            console.log("load courses , teacherId--->", teacherId);
-            console.log("load courses , defYrId--->", defYrId);
-            (teacher &&  defYrId && getCoursesTaught(teacherId, defYrId).then((res) => {                
-                
-                setTeacherCourses(res.data)
-            }))
-   
-        
-       
+
+        console.log("load courses , teacherId--->", teacherId);
+        console.log("load courses , defYrId--->", defYrId);
+        (teacher && defYrId && getCoursesTaught(teacherId, defYrId).then((res) => {
+
+            setTeacherCourses(res.data)
+        }))
+
+
+
     }
     useEffect(() => loadDefYr(), [defYr]);
     useEffect(() => loadTeacher(), []);
@@ -83,6 +83,37 @@ const Home = () => {
     }
 
 
+    const sectiongrades = () => {
+        const schoolyear = defYr1.description;
+        const course = currentCourse.name;
+        const section = currentSection.name
+        return (
+            <div>
+                <h4>Schoolyear: <span className='text-primary'>{schoolyear} </span></h4>
+                <h5>course:<span className='text-danger'>{course} </span>  section:<span className='text-danger'>{section}</span> </h5>
+                <table className='table'>
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Student</th>
+                            <th scope="col">Term1</th>
+                            <th scope="col">Term2</th>
+                            <th scope="col">Term3</th>
+                            <th scope="col">Term4</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {grades.map((s, index) => (<SectionGrades s={s} index={index} grades={grades} setGrades={setGrades} />))}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        )
+    }
+
     return (
 
         <div className='row'>
@@ -93,8 +124,7 @@ const Home = () => {
 
             </div>
             <div className='col-md-7'>
-
-                <SectionGrades grades={grades} schoolyear={defYr1.description} course={currentCourse.name} section={currentSection.name} />
+                {sectiongrades()}
             </div>
         </div>
     );

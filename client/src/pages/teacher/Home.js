@@ -18,36 +18,41 @@ const Home = () => {
     const [currentSection, setCurrentSection] = useState({});
     let gradesTemp = [];
     const loadDefYr = () => {
-        setTimeout(() => {
+       
             getDefYr().then((res) => {
 
                 setDefYr(res.data[0]._id);
-                setDefYr1(res.data[0]);
+               setDefYr1(res.data[0]);
+
+                 console.log("defYr--->", defYr);
 
             })
-        }, 1000);
+
 
     }
 
     const loadTeacher = () => {
         (user && getTeacher(user.email).then((res) => {
             setTeacher(res.data[0]);
-            console.log("teacher from get teacher", teacher);
+            console.log("teacher from get teacher", teacher.name);
         }))
     }
 
     const loadCourses = (teacherId, defYrId) => {
-        console.log("teacherId--->", teacherId);
-        console.log("defYrId--->", defYrId);
-        (user && getCoursesTaught(teacherId, defYrId).then((res) => {
-            console.log("teacher courses", res.data);
-            setTeacherCourses(res.data)
-
-        }))
+   
+            console.log("load courses , teacherId--->", teacherId);
+            console.log("load courses , defYrId--->", defYrId);
+            (teacher &&  defYrId && getCoursesTaught(teacherId, defYrId).then((res) => {                
+                
+                setTeacherCourses(res.data)
+            }))
+   
+        
+       
     }
     useEffect(() => loadDefYr(), [defYr]);
     useEffect(() => loadTeacher(), []);
-    useEffect(() => loadCourses(teacher._id, defYr), [teacher]);
+    useEffect(() => loadCourses(teacher._id, defYr), [teacher, defYr]);
 
     const handleCourseClick = (c) => {
         gradesTemp = [];
@@ -81,6 +86,7 @@ const Home = () => {
     return (
 
         <div className='row'>
+            {console.log("Rendered")}
             <div className='col-md-4'>
                 <TeacherCard teacher={teacher} />
                 {teacherCourses.coursesTaught && <TeacherCourses coursesTaught={teacherCourses.coursesTaught} handleCourseClick={(c) => handleCourseClick(c)} />}

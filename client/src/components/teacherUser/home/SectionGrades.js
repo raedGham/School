@@ -2,7 +2,7 @@ import React from 'react';
 
 const SectionGrades = ({ grades, schoolyear, course, section, handleChange }) => {
 
-    const handleChange
+
 
     return (
 

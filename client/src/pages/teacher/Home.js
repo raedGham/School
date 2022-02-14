@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDefYr } from '../../functions/schoolYear';
 import { getTeacher, getCoursesTaught } from '../../functions/teacher';
+import { createGrade } from '../../functions/grades';
 import { getSectionStudents } from '../../functions/section';
 import { useSelector, useDispatch } from 'react-redux';
 import TeacherCourses from '../../components/teacherUser/home/teacherCourses';
@@ -82,13 +83,20 @@ const Home = () => {
 
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("form submit", grades);
+        createGrade(grades, user.token).then(() => console.log("grades added sucessfully"))
+
+    }
 
     const sectiongrades = () => {
         const schoolyear = defYr1.description;
         const course = currentCourse.name;
         const section = currentSection.name
         return (
-            <div>
+
+            <form onSubmit={handleSubmit}>
                 <h4>Schoolyear: <span className='text-primary'>{schoolyear} </span></h4>
                 <h5>course:<span className='text-danger'>{course} </span>  section:<span className='text-danger'>{section}</span> </h5>
                 <table className='table'>
@@ -109,8 +117,8 @@ const Home = () => {
                     </tbody>
 
                 </table>
-
-            </div>
+                <button type="submit" className='btn btn-outline-primary' >Submit</button>
+            </form>
         )
     }
 

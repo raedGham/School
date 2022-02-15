@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDefYr } from '../../functions/schoolYear';
 import { getTeacher, getCoursesTaught } from '../../functions/teacher';
-import { createGrade } from '../../functions/grades';
+import { createGrade, getGrades } from '../../functions/grades';
 import { getSectionStudents } from '../../functions/section';
 import { useSelector, useDispatch } from 'react-redux';
 import TeacherCourses from '../../components/teacherUser/home/teacherCourses';

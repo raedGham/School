@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDefYr } from '../../functions/schoolYear';
 import { getTeacher, getCoursesTaught } from '../../functions/teacher';
-import { createGrade, getGrades } from '../../functions/grades';
+import { createGrade, sectionGrades } from '../../functions/grades';
 import { getSectionStudents } from '../../functions/section';
 import { useSelector, useDispatch } from 'react-redux';
 import TeacherCourses from '../../components/teacherUser/home/teacherCourses';
@@ -48,8 +48,6 @@ const Home = () => {
             setTeacherCourses(res.data)
         }))
 
-
-
     }
     useEffect(() => loadDefYr(), [defYr]);
     useEffect(() => loadTeacher(), []);
@@ -60,26 +58,30 @@ const Home = () => {
         console.log("clicked", c);
         setCurrentCourse(c.course);
         setCurrentSection(c.section);
-        // console.log("defYr", defYr)
-        getSectionStudents(defYr1, c.section).then((res) => {
+        sectionGrades(c.course._id,defYr, c.section._id, user.token).then((res)=> {
+            console.log("sectionGrades");
             console.log(res.data);
-            console.log(gradesTemp);
-            const temp = res.data.students;
-            temp.map((s) => gradesTemp.push({
-                studentName: s.name,
-                student: s._id,
-                course: c.course._id,
-                schoolyear: defYr,
-                section: c.section._id,
-                grade1: 0,
-                grade2: 0,
-                grade3: 0,
-                grade4: 0,
-                teacher: teacher._id
-            }));
-            console.log(gradesTemp);
-            setGrades(gradesTemp)
         })
+        
+        // getSectionStudents(defYr1, c.section).then((res) => {
+        //     console.log(res.data);
+        //     console.log(gradesTemp);
+        //     const temp = res.data.students;
+        //     temp.map((s) => gradesTemp.push({
+        //         studentName: s.name,
+        //         student: s._id,
+        //         course: c.course._id,
+        //         schoolYear: defYr,
+        //         section: c.section._id,
+        //         grade1: 0,
+        //         grade2: 0,
+        //         grade3: 0,
+        //         grade4: 0,
+        //         teacher: teacher._id
+        //     }));
+        //     console.log(gradesTemp);
+        //     setGrades(gradesTemp)
+        // })
 
     }
 

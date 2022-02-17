@@ -4,8 +4,8 @@ const SectionGrades = ({ s, index, grades, setGrades }) => {
 
     const handleChange = (e) => {
 
-        console.log(grades);
-        console.log(index);
+        // console.log(grades);
+        // console.log(index);
 
         const { name, value } = e.target;
 

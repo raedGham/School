@@ -54,6 +54,7 @@ const Home = () => {
     useEffect(() => loadCourses(teacher._id, defYr), [teacher, defYr]);
 
     const handleCourseClick = (c) => {
+        let sectiongrades = [];
         gradesTemp = [];
         console.log("clicked", c);
         setCurrentCourse(c.course);
@@ -61,27 +62,47 @@ const Home = () => {
         sectionGrades(c.course._id,defYr, c.section._id, user.token).then((res)=> {
             console.log("sectionGrades");
             console.log(res.data);
+            sectiongrades = res.data;
+
+            getSectionStudents(defYr1, c.section).then((res1) => {
+                // console.log(res1.data);
+                // console.log(gradesTemp);
+                const temp = res1.data.students;
+                temp.map((s) => {
+              var found = sectiongrades.find((st)=> {
+                 return st.student === s._id;
+              });
+      
+            //  console.log("found",found);
+            if (!found) {
+                
+                gradesTemp.push({
+                    studentName: s.name,
+                    student: s._id,
+                    course: c.course._id,
+                    schoolYear: defYr,
+                    section: c.section._id,
+                    grade1: 0,
+                    grade2: 0,
+                    grade3: 0,
+                    grade4: 0,
+                    teacher: teacher._id
+                })
+            }
+            else {
+                gradesTemp.push({...found,   studentName: s.name})
+            }
+    
+            });
+    
+
         })
         
-        // getSectionStudents(defYr1, c.section).then((res) => {
-        //     console.log(res.data);
-        //     console.log(gradesTemp);
-        //     const temp = res.data.students;
-        //     temp.map((s) => gradesTemp.push({
-        //         studentName: s.name,
-        //         student: s._id,
-        //         course: c.course._id,
-        //         schoolYear: defYr,
-        //         section: c.section._id,
-        //         grade1: 0,
-        //         grade2: 0,
-        //         grade3: 0,
-        //         grade4: 0,
-        //         teacher: teacher._id
-        //     }));
-        //     console.log(gradesTemp);
-        //     setGrades(gradesTemp)
-        // })
+
+    
+        console.log(gradesTemp);
+            setGrades(gradesTemp)
+        })
 
     }
 
@@ -114,6 +135,7 @@ const Home = () => {
                     </thead>
 
                     <tbody>
+                        {/* {JSON.stringify(grades,undefined,2)} */}
                         {grades.map((s, index) => (<SectionGrades s={s} index={index} grades={grades} setGrades={setGrades} />))}
 
                     </tbody>
